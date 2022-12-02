@@ -16,7 +16,6 @@ class Sheep(Boid):
     def __init__(self, position: Vector, velocity: Vector) -> None:
         self.position = position
         self.velocity = velocity
-        self.acceleration = 0
 
 
     def update(self, closest_sheep: List[Sheep]):

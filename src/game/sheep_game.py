@@ -7,34 +7,65 @@ from random import randint
 
 
 from models.sheep import Sheep
+from models.dog import Dog
 
 from game.game import Game
 
 from classes.vector import Vector
 
 from services.sheep_service import SheepService
+from services.dog_service import DogService
+from singletons import service_locator, game_configs
 
 NUMBER_OF_SHEEP = 20
+NUMBER_OF_DOGS = 2
+
+KEY_DIRECTION = {
+    pygame.K_UP: Vector(0, -1),
+    pygame.K_DOWN: Vector(0, 1),
+    pygame.K_LEFT: Vector(-1, 0),
+    pygame.K_RIGHT: Vector(1, 0)
+}
 
 class SheepGame(Game):
 
     sheep_service: SheepService
+    dog_service: DogService
 
 
     def __init__(self, width: int, height: int, scale: int):
-        self.game_grid = (width/scale, height/scale)
-        super().__init__(height = self.game_grid[1], width = self.game_grid[0], scale = scale)
+        self.game_grid = Vector(width/scale, height/scale)
+        super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = scale)
 
-        # create sheep
-        self.sheep_service = SheepService(sprite_group=self.sprites[Sheep.__class__.__str__])
+        # registry dog service
+        self.dog_service: DogService = service_locator.registry(
+            name="dog_service", 
+            service=DogService
+        )
+        self.sprites[Dog.__name__] = self.dog_service.sprites
+
+        # registry sheep service
+        self.sheep_service: SheepService = service_locator.registry(
+            name="sheep_service", 
+            service=SheepService
+        )
+        self.sprites[Sheep.__name__] = self.sheep_service.sprites
+
+        # add dog to its service
+        for _ in range(NUMBER_OF_DOGS):
+            self.dog_service.add_dog(
+                Dog(position=Vector(x = self.game_grid.x/2, y = self.game_grid.y/2))
+            )
+        self.dog_service.select(self.dog_service.dogs[0])
+
+        # add sheeps to its service
         for _ in range(NUMBER_OF_SHEEP):
             self.sheep_service.add_sheep(
                 Sheep(
-                    position=Vector(randint(0, self.game_grid[0]), randint(0, self.game_grid[1])),
+                    position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
                 )
             )
-        
 
     
 
@@ -43,11 +74,26 @@ class SheepGame(Game):
         Game logic
         """
 
-        # TO DO: press scape to switch simulation settings
         # handle events
-        # for event in events:
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w:
+                    idx = self.dog_service.dogs.index(self.dog_service.selected_dog)
+                    self.dog_service.select(self.dog_service.dogs[(idx+1)%len(self.dog_service.dogs)])
 
 
-        # update sheep state
+        # controll dog
+        keys = pygame.key.get_pressed()
+        direction = Vector(0,0)
+        for key, vector in KEY_DIRECTION.items():
+            if keys[key]:
+                direction.sum(vector)
+        direction.normalize()
+
+
+        self.dog_service.selected_dog.move(direction)
+
+        # update objects state
         self.sheep_service.update()
+        self.dog_service.update()
             

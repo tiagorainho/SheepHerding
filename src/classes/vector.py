@@ -22,6 +22,9 @@ class Vector:
         return self
     
     def div(self, value: float) -> Vector:
+        if value == 0:
+            return self
+
         self.x = self.x/value
         self.y = self.y/value
         return self

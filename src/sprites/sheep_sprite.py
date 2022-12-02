@@ -17,7 +17,7 @@ class SheepSprite(CustomSprite):
     
 
     def update(self):
-        color = "red"
+        color = "green"
         self.image.fill(color = color)
         
         self.rect.x = self.sheep.position.x * self.scale

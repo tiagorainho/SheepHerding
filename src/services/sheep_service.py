@@ -10,13 +10,15 @@ from singletons import game_configs
 
 from collections import defaultdict
 
+PERCEPTION_DISTANCE = 100
+
 class SheepService:
 
     # change to use a map [coordinates, sheep]
     sprites = pygame.sprite.Group
 
-    def __init__(self, sprite_group: pygame.sprite.Group):
-        self.sprites = sprite_group
+    def __init__(self):
+        self.sprites = pygame.sprite.Group()
 
     @property
     def sheeps(self) -> List[Sheep]:
@@ -35,9 +37,9 @@ class SheepService:
             neighbors[sheep] = []
             for sheep2 in sheeps:
                 if sheep == sheep2: continue
-                if sheep.position.distance(sheep2.position) < 100:
+                if sheep.position.distance(sheep2.position) < PERCEPTION_DISTANCE:
                     neighbors[sheep].append(sheep2)
         
-        # 
+        # update sheeps position
         for sheep, closest_sheeps in neighbors.items():
             sheep.update(closest_sheeps)
