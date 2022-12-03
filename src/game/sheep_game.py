@@ -1,21 +1,19 @@
 
 import pygame
-import numpy as np
 
 from typing import List
 from random import randint
 
+from game.game import Game
 
 from models.sheep import Sheep
 from models.dog import Dog
 
-from game.game import Game
-
-from classes.vector import Vector
-
+from singletons import service_locator
 from services.sheep_service import SheepService
 from services.dog_service import DogService
-from singletons import service_locator, game_configs
+
+from classes.vector import Vector
 
 NUMBER_OF_SHEEP = 20
 NUMBER_OF_DOGS = 2

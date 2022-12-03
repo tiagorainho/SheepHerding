@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from classes.vector import Vector
 
-DESACELARATION_MULTIPLIER = 0.9
+DESACELARATION_MULTIPLIER = 0.96
 MAX_VELOCITY = 3
 
 

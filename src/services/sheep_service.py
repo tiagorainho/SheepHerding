@@ -9,6 +9,8 @@ import pygame
 from singletons import game_configs
 
 from collections import defaultdict
+from singletons import service_locator
+from services.dog_service import DogService
 
 PERCEPTION_DISTANCE = 100
 
@@ -29,17 +31,27 @@ class SheepService:
     
     def update(self):
         
-        sheeps = self.sheeps
+        dog_service: DogService = service_locator.get_service('dog_service')
+        dogs = dog_service.dogs
+        threats = defaultdict(list)
+
+
+        sheeps: List[Sheep] = self.sheeps
+        
 
         # get closest sheep
         neighbors = defaultdict(list)
         for sheep in sheeps:
             neighbors[sheep] = []
+            threats[sheep] = []
             for sheep2 in sheeps:
                 if sheep == sheep2: continue
                 if sheep.position.distance(sheep2.position) < PERCEPTION_DISTANCE:
                     neighbors[sheep].append(sheep2)
+            for dog in dogs:
+                if sheep.position.distance(dog.position) < (PERCEPTION_DISTANCE/3):
+                    threats[sheep].append(dog)
         
         # update sheeps position
         for sheep, closest_sheeps in neighbors.items():
-            sheep.update(closest_sheeps)
+            sheep.update(closest_sheeps, [dog.position for dog in threats[sheep]])

@@ -18,9 +18,9 @@ class Sheep(Boid):
         self.velocity = velocity
 
 
-    def update(self, closest_sheep: List[Sheep]):
+    def update(self, closest_sheep: List[Sheep], threats: List[Vector]):
         # self.fsm.update(ant=self)
 
-        acceleration: Vector = self.get_boid_behaviour(closest_sheep)
+        acceleration: Vector = self.get_boid_behaviour(closest_sheep, threats)
         self.velocity.sum(acceleration).limit(self.max_velocity)
         self.position.sum(self.velocity)
