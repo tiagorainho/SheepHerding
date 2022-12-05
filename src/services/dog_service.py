@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pygame
 from typing import List
-from singletons import game_configs
 from models.dog import Dog
 
 from sprites.dog_sprite import DogSprite
@@ -23,7 +22,7 @@ class DogService:
         self.selected_dog = dog
 
     def add_dog(self, dog: Dog):
-        self.sprites.add(DogSprite(dog=dog, width=game_configs.width, height=game_configs.height, scale=game_configs.scale))
+        self.sprites.add(DogSprite(dog=dog))
     
     def update(self):
         # update dogs positions

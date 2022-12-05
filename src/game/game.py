@@ -3,8 +3,6 @@ from collections import defaultdict
 
 import pygame
 
-from singletons import game_configs
-
 class Game:
     clock: pygame.time.Clock
     fps: int
@@ -27,11 +25,6 @@ class Game:
         self.display = pygame.display.set_mode((self.width, self.height))
         self.screen = pygame.Surface((self.width, self.height))
         self.fps = 20
-
-        game_configs.width = self.width
-        game_configs.height = self.height
-        game_configs.scale = self.scale
-
         self.sprites = defaultdict(pygame.sprite.Group)
         
         pygame.mixer.init()

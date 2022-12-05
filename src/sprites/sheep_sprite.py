@@ -1,5 +1,4 @@
 import pygame
-from typing import List
 from models.sheep import Sheep
 from sprites.custom_sprite import CustomSprite
 
@@ -8,11 +7,11 @@ class SheepSprite(CustomSprite):
 
     sheep: Sheep
     
-    def __init__(self, sheep: Sheep, width: int, height: int, scale: int):
-        super().__init__(width=width, height=height, scale=scale, size = 2)
+    def __init__(self, sheep: Sheep):
+        super().__init__(size = 1.5)
         self.sheep = sheep
 
-        self.image = pygame.Surface([scale*self.size, scale*self.size])
+        self.image = pygame.Surface([self.scale*self.size, self.scale*self.size])
         self.rect = self.image.get_rect()
     
 

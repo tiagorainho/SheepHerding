@@ -45,7 +45,7 @@ class Vector:
     def limit(self, value: float) -> Vector:
         mag = self.magnitude
         if mag > value:
-            self.normalize()
+            self.normalize().mult(value)
         return self
 
     def copy(self) -> Vector:

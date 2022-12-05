@@ -5,21 +5,16 @@ from classes.vector import Vector
 
 DEFAULT_ALLIGNMENT_STRENGTH: float = 1
 DEFAULT_COHESION_STRENGTH: float = 2
-DEFAULT_SEPARATION_STRENGTH: float = 12
+DEFAULT_SEPARATION_STRENGTH: float = 40
+THREAT_SEPARATION_STRENGTH: float = DEFAULT_SEPARATION_STRENGTH * 5
 
-class Boid():
+
+class Boid:
 
     position: Vector
     velocity: Vector
     max_force: float = 1
 
-    
-    
-
-    def __init__(self) -> None:
-        pass
-
-    
     def allignment(self, closest_boids: List[Boid], allignment_strength: float = DEFAULT_ALLIGNMENT_STRENGTH) -> Vector:
         steering: Vector = Vector(0,0)
         if len(closest_boids) == 0:
@@ -50,19 +45,19 @@ class Boid():
             .sub(self.position)\
             .mult(scalar = cohesion_strength)
 
-    def separation(self, closest_boids: List[Vector], separation_strength: float = DEFAULT_SEPARATION_STRENGTH) -> Vector:
+    def separation(self, neighbors: List[Vector], separation_strength: float = DEFAULT_SEPARATION_STRENGTH) -> Vector:
         repulsive_force = Vector(0,0)
-        if len(closest_boids) == 0:
+        if len(neighbors) == 0:
             return repulsive_force
 
-        # get median position of closest boids
-        for position in closest_boids:
+        # get median position of neighbors
+        for position in neighbors:
             repulsive_vector = self.position.copy().sub(position)
             mag = repulsive_vector.magnitude
-            repulsive_force.sum(repulsive_vector.div(mag))
+            repulsive_force.sum(repulsive_vector.div(mag*mag))
 
         return repulsive_force\
-            .div(len(closest_boids))\
+            .div(len(neighbors))\
             .mult(scalar = separation_strength)
             
     
@@ -72,5 +67,5 @@ class Boid():
         return self.allignment(closest_boids)\
             .sum(self.cohesion(closest_boids))\
             .sum(self.separation([boid.position for boid in closest_boids]))\
-            .sum(self.separation(threats, DEFAULT_SEPARATION_STRENGTH*5))\
+            .sum(self.separation(threats, THREAT_SEPARATION_STRENGTH))\
             .limit(value = self.max_force)

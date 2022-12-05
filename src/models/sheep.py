@@ -1,17 +1,16 @@
 from __future__ import annotations
-from typing import Tuple, List
-
-import numpy as np
+from typing import List
 
 from classes.vector import Vector
 
 from models.boid import Boid
 
+MAX_VELOCITY = 2
+MAX_ACCELERATION = 0.6
 
 class Sheep(Boid):
     position: Vector
     velocity: Vector
-    max_velocity: float = 2
 
     def __init__(self, position: Vector, velocity: Vector) -> None:
         self.position = position
@@ -22,5 +21,5 @@ class Sheep(Boid):
         # self.fsm.update(ant=self)
 
         acceleration: Vector = self.get_boid_behaviour(closest_sheep, threats)
-        self.velocity.sum(acceleration).limit(self.max_velocity)
+        self.velocity.sum(acceleration.limit(MAX_ACCELERATION)).limit(MAX_VELOCITY)
         self.position.sum(self.velocity)

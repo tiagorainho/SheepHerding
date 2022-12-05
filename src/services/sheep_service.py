@@ -6,8 +6,6 @@ from models.sheep import Sheep
 from sprites.sheep_sprite import SheepSprite
 import pygame
 
-from singletons import game_configs
-
 from collections import defaultdict
 from singletons import service_locator
 from services.dog_service import DogService
@@ -27,14 +25,13 @@ class SheepService:
         return [sprite.sheep for sprite in self.sprites.sprites()]
 
     def add_sheep(self, sheep: Sheep):
-        self.sprites.add(SheepSprite(sheep=sheep, width=game_configs.width, height=game_configs.height, scale=game_configs.scale))
+        self.sprites.add(SheepSprite(sheep=sheep))
     
     def update(self):
         
         dog_service: DogService = service_locator.get_service('dog_service')
         dogs = dog_service.dogs
         threats = defaultdict(list)
-
 
         sheeps: List[Sheep] = self.sheeps
         

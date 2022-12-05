@@ -7,13 +7,12 @@ class DogSprite(CustomSprite):
 
     dog: Dog
     
-    def __init__(self, dog: Dog, width: int, height: int, scale: int):
-        super().__init__(width=width, height=height, scale=scale, size = 2)
+    def __init__(self, dog: Dog):
+        super().__init__(size = 1)
         self.dog = dog
 
-        self.image = pygame.Surface([scale*self.size, scale*self.size])
+        self.image = pygame.Surface([self.scale*self.size, self.scale*self.size])
         self.rect = self.image.get_rect()
-    
 
     def update(self):
 

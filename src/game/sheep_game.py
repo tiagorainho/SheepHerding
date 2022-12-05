@@ -14,6 +14,7 @@ from services.sheep_service import SheepService
 from services.dog_service import DogService
 
 from classes.vector import Vector
+from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 
 NUMBER_OF_SHEEP = 20
 NUMBER_OF_DOGS = 2
@@ -31,9 +32,9 @@ class SheepGame(Game):
     dog_service: DogService
 
 
-    def __init__(self, width: int, height: int, scale: int):
-        self.game_grid = Vector(width/scale, height/scale)
-        super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = scale)
+    def __init__(self):
+        self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
+        super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
 
         # registry dog service
         self.dog_service: DogService = service_locator.registry(
