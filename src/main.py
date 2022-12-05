@@ -1,11 +1,9 @@
-from game.game import Game
 from game.sheep_game import SheepGame
 
 import cProfile
 
 DEBUG: bool = False
 
-import pygame
 import atexit
 import pstats
 import io
