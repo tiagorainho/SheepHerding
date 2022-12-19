@@ -16,8 +16,8 @@ class Dog:
         self.position = position
         self.velocity = Vector(0, 0)
 
-    def move(self, acceleration: Vector):
-        self.velocity.sum(acceleration.limit(MAX_ACCELERATION))
+    def accelerate(self, acceleration: Vector):
+        self.velocity.sum(acceleration.limit(MAX_ACCELERATION)).limit(MAX_VELOCITY)
     
     def update(self, selected: bool):
         self.selected = selected

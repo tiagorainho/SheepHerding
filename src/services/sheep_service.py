@@ -10,7 +10,7 @@ from collections import defaultdict
 from singletons import service_locator
 from services.dog_service import DogService
 
-PERCEPTION_DISTANCE = 100
+PERCEPTION_DISTANCE = 40
 
 class SheepService:
 
@@ -34,7 +34,6 @@ class SheepService:
         threats = defaultdict(list)
 
         sheeps: List[Sheep] = self.sheeps
-        
 
         # get closest sheep
         neighbors = defaultdict(list)
@@ -46,7 +45,7 @@ class SheepService:
                 if sheep.position.distance(sheep2.position) < PERCEPTION_DISTANCE:
                     neighbors[sheep].append(sheep2)
             for dog in dogs:
-                if sheep.position.distance(dog.position) < (PERCEPTION_DISTANCE/3):
+                if sheep.position.distance(dog.position) < (PERCEPTION_DISTANCE):
                     threats[sheep].append(dog)
         
         # update sheeps position

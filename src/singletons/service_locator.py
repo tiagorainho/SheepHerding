@@ -8,7 +8,7 @@ def registry(name: str, service: Service) -> any:
     if name in services:
         raise Exception("Service already exists")
     
-    services[name] = service()
+    services[name] = service
     return services[name]
 
 def get_service(name: str) -> any or None:

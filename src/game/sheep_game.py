@@ -1,5 +1,5 @@
-
 import pygame
+
 
 from typing import List
 from random import randint
@@ -12,6 +12,7 @@ from models.dog import Dog
 from singletons import service_locator
 from services.sheep_service import SheepService
 from services.dog_service import DogService
+from services.map_service import MapService
 
 from classes.vector import Vector
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
@@ -26,6 +27,7 @@ KEY_DIRECTION = {
     pygame.K_RIGHT: Vector(1, 0)
 }
 
+
 class SheepGame(Game):
 
     sheep_service: SheepService
@@ -36,17 +38,22 @@ class SheepGame(Game):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
         super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
 
+        self.map_service: MapService = service_locator.registry(
+            name="map_service",
+            service=MapService(self.game_grid)
+        )
+
         # registry dog service
         self.dog_service: DogService = service_locator.registry(
             name="dog_service", 
-            service=DogService
+            service=DogService()
         )
         self.sprites[Dog.__name__] = self.dog_service.sprites
 
         # registry sheep service
         self.sheep_service: SheepService = service_locator.registry(
             name="sheep_service", 
-            service=SheepService
+            service=SheepService()
         )
         self.sprites[Sheep.__name__] = self.sheep_service.sprites
 
@@ -65,7 +72,6 @@ class SheepGame(Game):
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
                 )
             )
-
     
 
     def update(self, events: List[pygame.event.Event]):
@@ -89,10 +95,11 @@ class SheepGame(Game):
                 direction.sum(vector)
         direction.normalize()
 
-
-        self.dog_service.selected_dog.move(direction)
+        self.dog_service.selected_dog.accelerate(direction)
 
         # update objects state
         self.sheep_service.update()
         self.dog_service.update()
-            
+
+        self.map_service.update()
+        

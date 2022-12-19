@@ -6,9 +6,10 @@ from classes.vector import Vector
 from models.boid import Boid
 from states.sheep_fsm import SheepFSM
 
+ACELARATION_MULTIPLIER = 0.9
 MAX_VELOCITY = 2
 MAX_ACCELERATION = 0.6
-MIN_VELOCITY = 0.2
+MIN_VELOCITY = 0.1
 
 class Sheep(Boid):
     position: Vector
@@ -33,12 +34,15 @@ class Sheep(Boid):
 
 
     def update(self, closest_sheep: List[Sheep], threats: List[Vector]):
+
         # update perception
         self.closest_sheep = closest_sheep
         self.threats = threats
 
         self.fsm.update(ant=self)
-        self.accelerate(self.boid_acceleration())
+
+        # simulate drag
+        self.velocity.mult(ACELARATION_MULTIPLIER)
 
         # ignore minimal velocity changes. Objective: diminish flickering
         if self.velocity.magnitude <= MIN_VELOCITY:

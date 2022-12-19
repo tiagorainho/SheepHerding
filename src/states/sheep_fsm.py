@@ -39,4 +39,4 @@ class Herd(State):
         super().__init__(self.__class__.__name__)
 
     def update(self, sheep):
-        pass
+        sheep.accelerate(sheep.boid_acceleration())
