@@ -28,11 +28,13 @@ class SheepService:
         self.sprites.add(SheepSprite(sheep=sheep))
     
     def update(self):
-        
-        dog_service: DogService = service_locator.get_service('dog_service')
-        dogs = dog_service.dogs
         threats = defaultdict(list)
 
+        # get dogs
+        dog_service: DogService = service_locator.get_service('dog_service')
+        dogs = dog_service.dogs
+        
+        # get sheeps
         sheeps: List[Sheep] = self.sheeps
 
         # get closest sheep
@@ -45,9 +47,10 @@ class SheepService:
                 if sheep.position.distance(sheep2.position) < PERCEPTION_DISTANCE:
                     neighbors[sheep].append(sheep2)
             for dog in dogs:
-                if sheep.position.distance(dog.position) < (PERCEPTION_DISTANCE):
+                if sheep.position.distance(dog.position) < PERCEPTION_DISTANCE:
                     threats[sheep].append(dog)
         
         # update sheeps position
         for sheep, closest_sheeps in neighbors.items():
             sheep.update(closest_sheeps, [dog.position for dog in threats[sheep]])
+        

@@ -30,7 +30,9 @@ class MapService:
         self.game_grid.y -= 1
 
         self.sprites = pygame.sprite.Group()
-        self.sprites.add(MapSprite())
+
+        map_sprite = MapSprite()
+        self.sprites.add(map_sprite)
     
     def add_repulsive_force(self, obj , direction: Vector, repulsive_force = BORDER_REPULSIVE_FORCE):
         mag = direction.magnitude

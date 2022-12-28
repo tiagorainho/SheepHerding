@@ -1,17 +1,19 @@
 from __future__ import annotations
 from typing import List
 
+from observers.subject import Subject
 from classes.vector import Vector
 
 from models.boid import Boid
 from states.sheep_fsm import SheepFSM
+from models.corral import Corral
 
 ACELARATION_MULTIPLIER = 0.9
 MAX_VELOCITY = 2
 MAX_ACCELERATION = 0.6
 MIN_VELOCITY = 0.1
 
-class Sheep(Boid):
+class Sheep(Boid, Subject):
     position: Vector
     velocity: Vector
     
@@ -19,8 +21,12 @@ class Sheep(Boid):
     
     closest_sheep: List[Sheep]
     threats: List[Vector]
+    
+    corral: Corral or None
 
     def __init__(self, position: Vector, velocity: Vector) -> None:
+        Subject.__init__(self)
+        self.corral = None
         self.position = position
         self.velocity = velocity
         self.fsm = SheepFSM()
@@ -28,10 +34,11 @@ class Sheep(Boid):
         self.threats = []
         self.closest_sheep = []
 
-
     def boid_acceleration(self) -> Vector:
         return self.get_boid_behaviour(self.closest_sheep, self.threats)
-
+    
+    def in_corral(self, corral = None):
+        self.corral = corral
 
     def update(self, closest_sheep: List[Sheep], threats: List[Vector]):
 

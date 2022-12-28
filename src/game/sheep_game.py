@@ -13,6 +13,9 @@ from singletons import service_locator
 from services.sheep_service import SheepService
 from services.dog_service import DogService
 from services.map_service import MapService
+from services.corral_service import CorralService
+from observers.achievements import Achievements
+from services.score_service import ScoreService
 
 from classes.vector import Vector
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
@@ -32,16 +35,33 @@ class SheepGame(Game):
 
     sheep_service: SheepService
     dog_service: DogService
+    corral_service: CorralService
+    map_service: MapService
+    score_board: Achievements
 
 
     def __init__(self):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
         super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
+        
+        self.score_service: ScoreService = service_locator.registry(
+            name="scores_service",
+            service=ScoreService()
+        )
+        self.sprites['scores'] = self.score_service.sprites
 
         self.map_service: MapService = service_locator.registry(
             name="map_service",
             service=MapService(self.game_grid)
         )
+        self.sprites['map'] = self.map_service.sprites
+
+        self.corral_service: CorralService = service_locator.registry(
+            name="corral_service",
+            service=CorralService(self.game_grid)
+        )
+        self.sprites['corral'] = self.corral_service.sprites
+
 
         # registry dog service
         self.dog_service: DogService = service_locator.registry(
@@ -66,13 +86,15 @@ class SheepGame(Game):
 
         # add sheeps to its service
         for _ in range(NUMBER_OF_SHEEP):
-            self.sheep_service.add_sheep(
-                Sheep(
+            new_sheep = Sheep(
                     position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
                 )
+
+            new_sheep.add_observer(obs=self.score_service.score_board)
+            self.sheep_service.add_sheep(
+                new_sheep
             )
-    
 
     def update(self, events: List[pygame.event.Event]):
         """
@@ -95,11 +117,15 @@ class SheepGame(Game):
                 direction.sum(vector)
         direction.normalize()
 
+        self.corral_service.update()
+
         self.dog_service.selected_dog.accelerate(direction)
 
         # update objects state
         self.sheep_service.update()
         self.dog_service.update()
 
+        # update map
         self.map_service.update()
+        self.score_service.update()
         
