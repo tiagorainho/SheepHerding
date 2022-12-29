@@ -3,25 +3,27 @@ import pygame
 
 from typing import List
 from random import randint
+from time import sleep
 
 from game.game import Game
 
 from models.sheep import Sheep
 from models.dog import Dog
+from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
 
 from singletons import service_locator
 from services.sheep_service import SheepService
 from services.dog_service import DogService
 from services.map_service import MapService
 from services.corral_service import CorralService
-from observers.achievements import Achievements
 from services.score_service import ScoreService
 
 from classes.vector import Vector
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 
-NUMBER_OF_SHEEP = 20
+NUMBER_OF_SHEEP = 1
 NUMBER_OF_DOGS = 2
+
 
 KEY_DIRECTION = {
     pygame.K_UP: Vector(0, -1),
@@ -37,8 +39,35 @@ class SheepGame(Game):
     dog_service: DogService
     corral_service: CorralService
     map_service: MapService
-    score_board: Achievements
+    score_service: ScoreService
 
+    def add_level(self):
+
+        # add dogs to its service
+        for _ in range(NUMBER_OF_DOGS):
+            self.dog_service.add_dog(
+                Dog(position=Vector(x = self.game_grid.x/2, y = self.game_grid.y/2))
+            )
+        self.dog_service.select(self.dog_service.dogs[0])
+
+        # add sheeps to its service
+        for _ in range(NUMBER_OF_SHEEP):
+            new_sheep = Sheep(
+                    position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
+                    velocity=Vector(randint(-1, 1), randint(-1, 1)),
+                )
+
+            new_sheep.add_observer(obs=self.score_service.score_board)
+            self.sheep_service.add_sheep(
+                new_sheep
+            )
+        
+        # add corral
+        self.corral_service.clear_corrals()
+        corral_radius = randint(MIN_CORRAL_RADIUS, MAX_CORRAL_RADIUS)
+        corral_position = Vector(randint(0, 150),randint(0,150) )
+        corral = Corral(corral_position, corral_radius)
+        self.corral_service.add_corral(corral=corral)
 
     def __init__(self):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
@@ -77,25 +106,8 @@ class SheepGame(Game):
         )
         self.sprites[Sheep.__name__] = self.sheep_service.sprites
 
-        # add dog to its service
-        for _ in range(NUMBER_OF_DOGS):
-            self.dog_service.add_dog(
-                Dog(position=Vector(x = self.game_grid.x/2, y = self.game_grid.y/2))
-            )
-        self.dog_service.select(self.dog_service.dogs[0])
-
-        # add sheeps to its service
-        for _ in range(NUMBER_OF_SHEEP):
-            new_sheep = Sheep(
-                    position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
-                    velocity=Vector(randint(-1, 1), randint(-1, 1)),
-                )
-
-            new_sheep.add_observer(obs=self.score_service.score_board)
-            self.sheep_service.add_sheep(
-                new_sheep
-            )
-
+        self.add_level()
+        
     def update(self, events: List[pygame.event.Event]):
         """
         Game logic
@@ -128,4 +140,8 @@ class SheepGame(Game):
         # update map
         self.map_service.update()
         self.score_service.update()
-        
+
+        # level up
+        if self.score_service.score_board.total_score >= NUMBER_OF_SHEEP:
+            self.score_service.increase_level()
+            self.add_level()

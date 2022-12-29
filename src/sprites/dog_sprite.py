@@ -16,7 +16,7 @@ class DogSprite(CustomSprite):
 
     def update(self):
 
-        color = "blue" if self.dog.selected else "red"
+        color = "blue" if hasattr(self.dog, "selected") and self.dog.selected else "red"
         self.image.fill(color = color)
         
         self.rect.x = self.dog.position.x * self.scale

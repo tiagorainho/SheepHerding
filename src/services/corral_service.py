@@ -19,13 +19,14 @@ class CorralService:
     def __init__(self, game_grid: Vector):
         self.game_grid = game_grid
         self.sprites = pygame.sprite.Group()
-
-        goal = Corral(Vector(100, 100), 10)
-        self.sprites.add(CorralSprite(goal))
-
-        # goal2 = Corral(Vector(150, 150), 10)
-        # self.sprites.add(CorralSprite(goal2))
+        
     
+    def add_corral(self, corral: Corral):
+        self.sprites.add(CorralSprite(corral=corral))
+    
+    def clear_corrals(self):
+        self.sprites.empty()
+
     @property
     def corrals(self) -> List[Corral]:
         return [sprite.corral for sprite in self.sprites.sprites()]

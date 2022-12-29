@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import List
 from classes.vector import Vector
 
+MIN_CORRAL_RADIUS: float = 5
+MAX_CORRAL_RADIUS: float = 10
 
 class Corral:
     position: Vector

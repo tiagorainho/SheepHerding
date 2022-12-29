@@ -1,6 +1,5 @@
 import pygame
 from sprites.custom_sprite import CustomSprite
-from classes.vector import Vector
 from models.corral import Corral
 
 
