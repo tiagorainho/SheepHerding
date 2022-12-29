@@ -3,7 +3,6 @@ import pygame
 
 from typing import List
 from random import randint
-from time import sleep
 
 from game.game import Game
 
@@ -21,8 +20,9 @@ from services.score_service import ScoreService
 from classes.vector import Vector
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 
-NUMBER_OF_SHEEP = 1
+NUMBER_OF_SHEEP = 10
 NUMBER_OF_DOGS = 2
+MIN_CORRAL_DISTANCE_FROM_BORDER = 25
 
 
 KEY_DIRECTION = {
@@ -43,6 +43,8 @@ class SheepGame(Game):
 
     def add_level(self):
 
+        level = self.score_service.level
+
         # add dogs to its service
         for _ in range(NUMBER_OF_DOGS):
             self.dog_service.add_dog(
@@ -51,7 +53,7 @@ class SheepGame(Game):
         self.dog_service.select(self.dog_service.dogs[0])
 
         # add sheeps to its service
-        for _ in range(NUMBER_OF_SHEEP):
+        for _ in range(NUMBER_OF_SHEEP + (level-1) * 5):
             new_sheep = Sheep(
                     position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
@@ -64,10 +66,16 @@ class SheepGame(Game):
         
         # add corral
         self.corral_service.clear_corrals()
-        corral_radius = randint(MIN_CORRAL_RADIUS, MAX_CORRAL_RADIUS)
-        corral_position = Vector(randint(0, 150),randint(0,150) )
+
+        corral_radius = max(MIN_CORRAL_RADIUS, MAX_CORRAL_RADIUS - level)
+        min_distance_to_border = MIN_CORRAL_DISTANCE_FROM_BORDER + corral_radius
+        corral_position = Vector(
+            randint(min_distance_to_border, self.game_grid.x-min_distance_to_border), 
+            randint(min_distance_to_border, self.game_grid.y-min_distance_to_border)
+        )
         corral = Corral(corral_position, corral_radius)
         self.corral_service.add_corral(corral=corral)
+
 
     def __init__(self):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
