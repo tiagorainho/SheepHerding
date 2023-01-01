@@ -38,9 +38,9 @@ class InputHandler:
 
                 if event.key == KEY_BACK:
                     if len(self.last_commands) == 0: continue
-                    commands_undo = self.last_commands[-1]
+                    commands_undo = self.last_commands.pop()
         
-        self.last_commands.append(commands)
-        
+        if commands:
+            self.last_commands.append(commands)
         return commands, commands_undo
         
