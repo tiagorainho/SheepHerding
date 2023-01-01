@@ -2,13 +2,15 @@ import os
 from typing import List
 from sprites.spritesheet import SpriteSheet
 
+ALLOWED_EXTENSIONS = ["png", "jpeg"]
+
 class DogModel:
     
     dog_sprites: List[SpriteSheet]
 
     def __init__(self, dir_name: str = "images/dog"):
         
-        file_names = [file_name for file_name in os.listdir(dir_name) if ".png" in file_name]
+        file_names = [file_name for file_name in os.listdir(dir_name) if any(ext in file_name for ext in ALLOWED_EXTENSIONS)]
 
         self.dog_sprites = [SpriteSheet(filename=f"{dir_name}/{file_name}") for file_name in file_names]
 

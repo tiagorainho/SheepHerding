@@ -35,7 +35,10 @@ class ScoreService:
     def increase_level(self):
         self.score_board = Achievements()
         self.level += 1
-        self.start_time = time()
+
+        # comment this line if want the timer to not restart at each level
+        # self.start_time = time()
+        
         self.setup_static_sprites()
 
     def update(self):

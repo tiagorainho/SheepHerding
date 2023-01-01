@@ -27,3 +27,9 @@ class Dog:
         self.selected = selected
         self.velocity.mult(ACELARATION_MULTIPLIER).limit(MAX_VELOCITY)
         self.position.sum(self.velocity)
+    
+    def __str__(self) -> str:
+        return f"Dog[{hex(id(self))}]: {self.position}"
+    
+    def __repr__(self) -> str:
+        return str(self)

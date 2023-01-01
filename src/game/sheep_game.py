@@ -22,16 +22,23 @@ from classes.vector import Vector
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 
 NUMBER_OF_SHEEP = 10
-NUMBER_OF_DOGS = 2
+NUMBER_OF_DOGS = 3
 MIN_CORRAL_DISTANCE_FROM_BORDER = 25
 DECREASE_RADIUS_BY_LEVEL = 2
 
 
 KEY_DIRECTION = {
     pygame.K_UP: Vector(0, -1),
+    pygame.K_w: Vector(0, -1),
+
     pygame.K_DOWN: Vector(0, 1),
+    pygame.K_s: Vector(0, 1),
+
     pygame.K_LEFT: Vector(-1, 0),
-    pygame.K_RIGHT: Vector(1, 0)
+    pygame.K_a: Vector(-1, 0),
+
+    pygame.K_RIGHT: Vector(1, 0),
+    pygame.K_d: Vector(1, 0),
 }
 
 
@@ -127,18 +134,24 @@ class SheepGame(Game):
         Game logic
         """
 
+        select_dog_vector: Vector = Vector(0,0)
+
         # handle events
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
-                    idx = self.dog_service.dogs.index(self.dog_service.selected_dog)
-                    self.dog_service.select(self.dog_service.dogs[(idx+1)%len(self.dog_service.dogs)])
-
+                if event.key in [pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d]:
+                    select_dog_vector.sum(KEY_DIRECTION[event.key])
+                    self.dog_service.select_dog(direction=select_dog_vector)
+                    
+                    # loop through dogs in a predefined order
+                    # idx = self.dog_service.dogs.index(self.dog_service.selected_dog)
+                    # self.dog_service.select(self.dog_service.dogs[(idx+1)%len(self.dog_service.dogs)])
 
         # controll dog
         keys = pygame.key.get_pressed()
         direction = Vector(0,0)
         for key, vector in KEY_DIRECTION.items():
+            if key not in [pygame.K_DOWN, pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT]: continue
             if keys[key]:
                 direction.sum(vector)
         direction.normalize()

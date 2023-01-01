@@ -2,7 +2,7 @@ import pygame
 from models.dog import Dog
 from sprites.custom_sprite import CustomSprite
 
-REAL_IMAGE_SIZE = (224, 150)
+REAL_IMAGE_SIZE = (520, 400)
 NOT_SELECTED_ALPHA = 150
 SELECTED_ALPHA = 255
 
@@ -11,7 +11,7 @@ class DogSprite(CustomSprite):
     dog: Dog
     
     def __init__(self, dog: Dog):
-        super().__init__(size = 5)
+        super().__init__(size = 8)
         self.dog = dog
 
         self.image = pygame.Surface([self.scale*self.size, self.scale*self.size])
