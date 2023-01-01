@@ -20,6 +20,7 @@ from services.score_service import ScoreService
 
 from classes.vector import Vector
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
+from commands.input_handler import InputHandler
 
 NUMBER_OF_SHEEP = 10
 NUMBER_OF_DOGS = 3
@@ -29,16 +30,9 @@ DECREASE_RADIUS_BY_LEVEL = 2
 
 KEY_DIRECTION = {
     pygame.K_UP: Vector(0, -1),
-    pygame.K_w: Vector(0, -1),
-
     pygame.K_DOWN: Vector(0, 1),
-    pygame.K_s: Vector(0, 1),
-
     pygame.K_LEFT: Vector(-1, 0),
-    pygame.K_a: Vector(-1, 0),
-
     pygame.K_RIGHT: Vector(1, 0),
-    pygame.K_d: Vector(1, 0),
 }
 
 
@@ -49,6 +43,7 @@ class SheepGame(Game):
     corral_service: CorralService
     map_service: MapService
     score_service: ScoreService
+    input_handler: InputHandler
 
     def add_level(self):
 
@@ -93,6 +88,8 @@ class SheepGame(Game):
     def __init__(self):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
         super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
+
+        self.input_handler = InputHandler(self)
         
         self.score_service: ScoreService = service_locator.registry(
             name="scores_service",
@@ -134,24 +131,21 @@ class SheepGame(Game):
         Game logic
         """
 
-        select_dog_vector: Vector = Vector(0,0)
-
         # handle events
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key in [pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d]:
-                    select_dog_vector.sum(KEY_DIRECTION[event.key])
-                    self.dog_service.select_dog(direction=select_dog_vector)
-                    
-                    # loop through dogs in a predefined order
-                    # idx = self.dog_service.dogs.index(self.dog_service.selected_dog)
-                    # self.dog_service.select(self.dog_service.dogs[(idx+1)%len(self.dog_service.dogs)])
+        exec_commands, undo_commands = self.input_handler.handle_input(events)
 
-        # controll dog
+        # execute commands
+        for command in exec_commands:
+            command.execute(game=self)
+
+        # undo commands
+        for command in undo_commands:
+            command.undo()
+
+        # controll selected dog
         keys = pygame.key.get_pressed()
         direction = Vector(0,0)
         for key, vector in KEY_DIRECTION.items():
-            if key not in [pygame.K_DOWN, pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT]: continue
             if keys[key]:
                 direction.sum(vector)
         direction.normalize()
