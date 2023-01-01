@@ -1,6 +1,7 @@
 import pygame
 from sprites.custom_sprite import CustomSprite
 
+
 class ScoreSprite(CustomSprite):
 
     level: int
@@ -16,7 +17,8 @@ class ScoreSprite(CustomSprite):
         pygame.font.init()
         self.font = pygame.font.SysFont('Comic Sans MS', self.font_size)
         self.rect = pygame.Rect(10, 5, self.width, self.height)
-        self.image = self.font.render(f"Level: {self.level}", False, "black")
+        
 
     def update(self):
-        pass
+        
+        self.image = self.font.render(f"Level: {self.level}", False, "black")

@@ -9,6 +9,7 @@ from game.game import Game
 from models.sheep import Sheep
 from models.dog import Dog
 from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
+from models.dog_model import DogModel
 
 from singletons import service_locator
 from services.sheep_service import SheepService
@@ -23,6 +24,7 @@ from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 NUMBER_OF_SHEEP = 10
 NUMBER_OF_DOGS = 2
 MIN_CORRAL_DISTANCE_FROM_BORDER = 25
+DECREASE_RADIUS_BY_LEVEL = 2
 
 
 KEY_DIRECTION = {
@@ -45,15 +47,19 @@ class SheepGame(Game):
 
         level = self.score_service.level
 
+        dog_model = DogModel("assets/images/dog")
         # add dogs to its service
         for _ in range(NUMBER_OF_DOGS):
             self.dog_service.add_dog(
-                Dog(position=Vector(x = self.game_grid.x/2, y = self.game_grid.y/2))
+                Dog(
+                    position=Vector(x = self.game_grid.x/2, y = self.game_grid.y/2),
+                    dog_model=dog_model
+                )
             )
         self.dog_service.select(self.dog_service.dogs[0])
 
         # add sheeps to its service
-        for _ in range(NUMBER_OF_SHEEP + (level-1) * 5):
+        for _ in range(NUMBER_OF_SHEEP + (level-1) * DECREASE_RADIUS_BY_LEVEL):
             new_sheep = Sheep(
                     position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
