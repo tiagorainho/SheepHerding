@@ -29,7 +29,6 @@ class DogSprite(CustomSprite):
 
         self.sprite_idx = 0
         
-
     def update(self):
 
         dog_velocity = self.dog.velocity.magnitude

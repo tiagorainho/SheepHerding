@@ -8,7 +8,6 @@ MAX_VELOCITY = 2
 MAX_ACCELERATION = 0.2
 MIN_VELOCITY = 0.02
 
-
 class Dog:
     position: Vector
     velocity: Vector

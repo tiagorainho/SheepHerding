@@ -77,4 +77,3 @@ class MapService:
         
         for sheep in self.sheep_service.sheeps:
             self.constrain_position(sheep)
-        

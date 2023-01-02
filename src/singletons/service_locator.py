@@ -1,7 +1,6 @@
 from typing import Callable, Dict, TypeAlias
 
 Service: TypeAlias = Callable
-
 services: Dict[str, Service] = dict()
 
 def registry(name: str, service: Service) -> any:

@@ -67,4 +67,3 @@ class InputHandler:
         commands.append(command)
 
         return commands, commands_undo
-        

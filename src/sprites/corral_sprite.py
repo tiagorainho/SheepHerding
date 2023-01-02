@@ -27,4 +27,3 @@ class CorralSprite(CustomSprite):
 
     def update(self):
         pass
-        

@@ -10,7 +10,6 @@ import io
 
 pr: cProfile.Profile
 
-
 def exit_handler():
     if not DEBUG: return
     s = io.StringIO()
@@ -19,7 +18,6 @@ def exit_handler():
 
     with open('log.txt', 'w+') as f:
         f.write(s.getvalue())
-
 
 if __name__ == '__main__':
 

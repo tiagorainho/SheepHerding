@@ -1,7 +1,6 @@
 
 from commands.command import Command
 from classes.vector import Vector
-from models.dog import Dog
 from singletons import service_locator
 from services.dog_service import DogService
 

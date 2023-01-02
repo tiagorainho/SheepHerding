@@ -1,11 +1,9 @@
+import pygame
 
 from typing import List
 
 from models.sheep import Sheep
-
 from sprites.sheep_sprite import SheepSprite
-import pygame
-
 from collections import defaultdict
 from singletons import service_locator
 from services.dog_service import DogService
@@ -53,4 +51,3 @@ class SheepService:
         # update sheeps position
         for sheep, closest_sheeps in neighbors.items():
             sheep.update(closest_sheeps, [dog.position for dog in threats[sheep]])
-        

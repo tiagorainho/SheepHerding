@@ -1,5 +1,3 @@
-import pygame
-
 from observers.observer import Observer
 from enums.events import Event
 from typing import DefaultDict
@@ -27,7 +25,6 @@ class Achievements(Observer):
 
             # play sound
             service_locator.get_service('sound_service').play_win_gold(volume=VOLUME)
-            
             
     def draw(self):
         print(f"score: {self.score}")
