@@ -20,6 +20,8 @@ from services.score_service import ScoreService
 from classes.vector import Vector
 from singletons import service_locator
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
+from services.sound_service import SoundService
+
 from commands.input_handler import InputHandler
 
 NUMBER_OF_SHEEP = 10
@@ -43,6 +45,7 @@ class SheepGame(Game):
     corral_service: CorralService
     map_service: MapService
     score_service: ScoreService
+    sound_service: SoundService
     input_handler: InputHandler
 
     def add_level(self):
@@ -126,6 +129,14 @@ class SheepGame(Game):
             service=SheepService()
         )
         self.sprites[Sheep.__name__] = self.sheep_service.sprites
+
+        # registry sound service
+        self.sound_service: SoundService = service_locator.registry(
+            name="sound_service", 
+            service=SoundService("assets/sounds")
+        )
+
+        self.sound_service.play_background()
 
         self.add_level()
         

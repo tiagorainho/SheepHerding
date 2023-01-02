@@ -31,8 +31,9 @@ class SheepSprite(CustomSprite):
     
 
     def update(self):
-        sheep_velocity = self.sheep.velocity.magnitude
 
+        # animate sheep
+        sheep_velocity = self.sheep.velocity.magnitude
         if sheep_velocity == 0:
             rest_sprite = self.sheep.sheep_model.rest_sprites()[0]
             self.update_image(rest_sprite)
@@ -43,6 +44,7 @@ class SheepSprite(CustomSprite):
             self.sprite_idx = (self.sprite_idx + sprite_update_velocity) % len(running_sprites)
             self.update_image(running_sprites[int(self.sprite_idx)])
 
+        # make sheep transparent
         if self.sheep.corral != None:
             self.intensity -= DELTA_TRANSPARENCY
             if self.intensity < 0:
@@ -53,15 +55,16 @@ class SheepSprite(CustomSprite):
             self.intensity += DELTA_TRANSPARENCY
             if self.intensity > 255:
                 self.intensity = 255
+        self.image.set_alpha(self.intensity)
         
+        # update sheep position
         self.rect.x = (self.sheep.position.x - self.size/2) * self.scale
         self.rect.y = (self.sheep.position.y - self.size/2) * self.scale
     
+        # draw sheep image
         self.image.fill("white")
         self.image.set_colorkey("white")
         self.image.blit(
             self.image_scaled,
             (0, 0)
         )
-
-        self.image.set_alpha(self.intensity)

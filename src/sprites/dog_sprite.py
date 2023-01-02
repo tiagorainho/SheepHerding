@@ -5,7 +5,7 @@ from sprites.custom_sprite import CustomSprite
 REAL_IMAGE_SIZE = (400, 300)
 NOT_SELECTED_ALPHA = 125
 SELECTED_ALPHA = 255
-SPRITE_COUNTER_DIVIDER = 2
+SPRITE_COUNTER_DIVIDER = 5
 
 class DogSprite(CustomSprite):
 
