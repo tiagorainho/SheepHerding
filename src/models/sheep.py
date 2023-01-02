@@ -10,7 +10,7 @@ from models.corral import Corral
 from models.sheep_model import SheepModel
 
 ACELARATION_MULTIPLIER = 0.9
-MAX_VELOCITY = 2
+MAX_VELOCITY = 1.5
 MAX_ACCELERATION = 0.6
 MIN_VELOCITY = 0.1
 
