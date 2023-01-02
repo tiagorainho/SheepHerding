@@ -65,9 +65,12 @@ class SheepGame(Game):
         # clear dogs
         self.dog_service.clear_dogs()
 
+        # add new dogs for each level
+        number_of_dogs_level = NUMBER_OF_DOGS + (level-1)
+
         # create circles in a circular way
-        circular_radius = NUMBER_OF_DOGS*1.5 + 2
-        circular_coordinates = circle_points(radius=circular_radius, number_of_points=NUMBER_OF_DOGS)
+        circular_radius = number_of_dogs_level*1.5 + 2
+        circular_coordinates = circle_points(radius=circular_radius, number_of_points=number_of_dogs_level)
 
         # add dogs to its service
         for circular_vector in circular_coordinates:
