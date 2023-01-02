@@ -141,6 +141,7 @@ class SheepGame(Game):
         # undo commands
         for command in undo_commands:
             command.undo()
+            
 
         # controll selected dog
         keys = pygame.key.get_pressed()

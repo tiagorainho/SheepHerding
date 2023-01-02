@@ -53,6 +53,9 @@ class Vector:
 
     def __str__(self):
         return str((self.x, self.y))
+    
+    def __eq__(self, vector: Vector) -> bool:
+        return vector.x == self.x and vector.y == self.y
 
 if __name__ == '__main__':
     v = Vector(1221,31212)

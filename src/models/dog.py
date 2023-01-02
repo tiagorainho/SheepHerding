@@ -6,7 +6,7 @@ from classes.vector import Vector
 ACELARATION_MULTIPLIER = 0.95
 MAX_VELOCITY = 2
 MAX_ACCELERATION = 0.2
-
+MIN_VELOCITY = 0.05
 
 
 class Dog:
@@ -26,6 +26,10 @@ class Dog:
     def update(self, selected: bool):
         self.selected = selected
         self.velocity.mult(ACELARATION_MULTIPLIER).limit(MAX_VELOCITY)
+
+        if self.velocity.magnitude <= MIN_VELOCITY:
+            self.velocity = Vector(0,0)
+
         self.position.sum(self.velocity)
     
     def __str__(self) -> str:
