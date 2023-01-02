@@ -32,14 +32,6 @@ MIN_CORRAL_DISTANCE_FROM_BORDER = 25
 DECREASE_RADIUS_BY_LEVEL = 2
 
 
-KEY_DIRECTION = {
-    pygame.K_UP: Vector(0, -1),
-    pygame.K_DOWN: Vector(0, 1),
-    pygame.K_LEFT: Vector(-1, 0),
-    pygame.K_RIGHT: Vector(1, 0),
-}
-
-
 class SheepGame(Game):
 
     sheep_service: SheepService
@@ -169,22 +161,13 @@ class SheepGame(Game):
         # execute commands
         for command in exec_commands:
             command.execute()
+        
 
         # undo commands
         for command in undo_commands:
             command.undo()
-            
-        # controll selected dog
-        keys = pygame.key.get_pressed()
-        direction = Vector(0,0)
-        for key, vector in KEY_DIRECTION.items():
-            if keys[key]:
-                direction.sum(vector)
-        direction.normalize()
 
         self.corral_service.update()
-
-        self.dog_service.selected_dog.accelerate(direction)
 
         # update objects state
         self.sheep_service.update()
