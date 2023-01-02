@@ -25,7 +25,7 @@ from services.sound_service import SoundService
 from commands.input_handler import InputHandler
 
 NUMBER_OF_SHEEP = 10
-NUMBER_OF_DOGS = 3
+NUMBER_OF_DOGS = 2
 MIN_CORRAL_DISTANCE_FROM_BORDER = 25
 DECREASE_RADIUS_BY_LEVEL = 2
 
@@ -54,6 +54,9 @@ class SheepGame(Game):
 
         dog_model = DogModel("assets/images/dog")
         sheep_model = SheepModel("assets/images/sheep")
+
+        # clear dogs
+        self.dog_service.clear_dogs()
 
         # add dogs to its service
         for _ in range(NUMBER_OF_DOGS):

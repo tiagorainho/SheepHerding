@@ -19,6 +19,9 @@ class DogService:
     @property
     def dogs(self) -> List[Dog]:
         return [sprite.dog for sprite in self.sprites.sprites()]
+    
+    def clear_dogs(self):
+        self.sprites.empty()
 
     def select(self, dog: Dog):
         self.selected_dog = dog
