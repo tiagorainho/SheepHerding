@@ -10,4 +10,4 @@ class SheepModel(SpriteModel):
         return self.sprites["run_right"]
     
     def rest_sprites(self):
-        return self.sprites["rest"]
+        return [self.sprites["run_right"][0]]

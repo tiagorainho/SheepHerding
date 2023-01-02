@@ -34,7 +34,7 @@ class SheepSprite(CustomSprite):
         sheep_velocity = self.sheep.velocity.magnitude
 
         if sheep_velocity == 0:
-            rest_sprite = self.sheep.sheep_model.run_right_sprites()[0]
+            rest_sprite = self.sheep.sheep_model.rest_sprites()[0]
             self.update_image(rest_sprite)
         else:
             running_sprites = self.sheep.sheep_model.run_right_sprites() if self.sheep.velocity.x >= 0 else self.sheep.sheep_model.run_left_sprites()
@@ -44,7 +44,6 @@ class SheepSprite(CustomSprite):
             self.update_image(running_sprites[int(self.sprite_idx)])
 
         if self.sheep.corral != None:
-            color = [255,0,0]
             self.intensity -= DELTA_TRANSPARENCY
             if self.intensity < 0:
                 self.intensity = 0
