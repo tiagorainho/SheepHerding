@@ -1,7 +1,7 @@
 import pygame
 
 from typing import List
-from random import randint
+from random import randint, seed
 
 from game.game import Game
 
@@ -53,6 +53,9 @@ class SheepGame(Game):
     def add_level(self):
 
         level = self.score_service.level
+        
+        # set seed dependent on level, therefore the levels are always the same
+        seed(level)
 
         dog_model = DogModel("assets/images/dog")
         sheep_model = SheepModel("assets/images/sheep")
