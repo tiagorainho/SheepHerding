@@ -57,17 +57,16 @@ class SheepGame(Game):
         # set seed dependent on level, therefore the levels are always the same
         seed(level)
 
+        middle_screen = Vector(x = self.game_grid.x/2, y = self.game_grid.y/2)
+
         dog_model = DogModel("assets/images/dog")
         sheep_model = SheepModel("assets/images/sheep")
 
         # clear dogs
         self.dog_service.clear_dogs()
 
-        middle_screen = Vector(x = self.game_grid.x/2, y = self.game_grid.y/2)
-
         # create circles in a circular way
         circular_radius = NUMBER_OF_DOGS*1.5 + 2
-        print(circular_radius)
         circular_coordinates = circle_points(radius=circular_radius, number_of_points=NUMBER_OF_DOGS)
 
         # add dogs to its service
@@ -166,13 +165,12 @@ class SheepGame(Game):
 
         # execute commands
         for command in exec_commands:
-            command.execute(game=self)
+            command.execute()
 
         # undo commands
         for command in undo_commands:
             command.undo()
             
-
         # controll selected dog
         keys = pygame.key.get_pressed()
         direction = Vector(0,0)
