@@ -6,7 +6,7 @@ from classes.vector import Vector
 ACELARATION_MULTIPLIER = 0.95
 MAX_VELOCITY = 2
 MAX_ACCELERATION = 0.2
-MIN_VELOCITY = 0.05
+MIN_VELOCITY = 0.02
 
 
 class Dog:

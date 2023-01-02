@@ -1,7 +1,8 @@
+
 from models.sprites_model import SpriteModel
 
-class DogModel(SpriteModel):
-    
+class SheepModel(SpriteModel):
+
     def run_left_sprites(self):
         return self.sprites["run_left"]
 

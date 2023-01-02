@@ -3,7 +3,7 @@ from models.dog import Dog
 from sprites.custom_sprite import CustomSprite
 
 REAL_IMAGE_SIZE = (400, 300)
-NOT_SELECTED_ALPHA = 150
+NOT_SELECTED_ALPHA = 125
 SELECTED_ALPHA = 255
 SPRITE_COUNTER_DIVIDER = 2
 
@@ -19,7 +19,7 @@ class DogSprite(CustomSprite):
         self.dog_image_scaled = pygame.transform.scale(image_from_spritesheet, (self.scale*self.size, self.scale*self.size))
     
     def __init__(self, dog: Dog):
-        super().__init__(size = 5)
+        super().__init__(size = 8)
         self.dog = dog
 
         self.image = pygame.Surface([self.scale*self.size, self.scale*self.size])
@@ -40,8 +40,8 @@ class DogSprite(CustomSprite):
         else:
             running_sprites = self.dog.dog_model.run_right_sprites() if self.dog.velocity.x >= 0 else self.dog.dog_model.run_left_sprites()
 
-            velocity = dog_velocity/SPRITE_COUNTER_DIVIDER
-            self.sprite_idx = (self.sprite_idx + velocity) % len(running_sprites)
+            sprite_update_velocity = dog_velocity/SPRITE_COUNTER_DIVIDER
+            self.sprite_idx = (self.sprite_idx + sprite_update_velocity) % len(running_sprites)
             self.update_image(running_sprites[int(self.sprite_idx)])
 
         self.rect.x = (self.dog.position.x - self.size/2) * self.scale

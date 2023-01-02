@@ -1,17 +1,16 @@
 import pygame
 
-
 from typing import List
 from random import randint
 
 from game.game import Game
 
 from models.sheep import Sheep
+from models.sheep_model import SheepModel
 from models.dog import Dog
-from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
 from models.dog_model import DogModel
+from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
 
-from singletons import service_locator
 from services.sheep_service import SheepService
 from services.dog_service import DogService
 from services.map_service import MapService
@@ -19,6 +18,7 @@ from services.corral_service import CorralService
 from services.score_service import ScoreService
 
 from classes.vector import Vector
+from singletons import service_locator
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 from commands.input_handler import InputHandler
 
@@ -50,6 +50,8 @@ class SheepGame(Game):
         level = self.score_service.level
 
         dog_model = DogModel("assets/images/dog")
+        sheep_model = SheepModel("assets/images/sheep")
+
         # add dogs to its service
         for _ in range(NUMBER_OF_DOGS):
             self.dog_service.add_dog(
@@ -65,6 +67,7 @@ class SheepGame(Game):
             new_sheep = Sheep(
                     position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
+                    sheep_model=sheep_model
                 )
 
             new_sheep.add_observer(obs=self.score_service.score_board)

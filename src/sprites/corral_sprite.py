@@ -11,7 +11,7 @@ class CorralSprite(CustomSprite):
         super().__init__(size=corral.radius)
 
         self.corral = corral
-        self.color = "red"
+        self.color = (100, 255, 10)
 
         length = self.scale*self.size*2
         self.image = pygame.Surface([length, length])

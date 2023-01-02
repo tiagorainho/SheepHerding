@@ -7,6 +7,7 @@ from classes.vector import Vector
 from models.boid import Boid
 from states.sheep_fsm import SheepFSM
 from models.corral import Corral
+from models.sheep_model import SheepModel
 
 ACELARATION_MULTIPLIER = 0.9
 MAX_VELOCITY = 2
@@ -24,8 +25,12 @@ class Sheep(Boid, Subject):
     
     corral: Corral or None
 
-    def __init__(self, position: Vector, velocity: Vector) -> None:
+    sheep_model: SheepModel
+
+    def __init__(self, position: Vector, velocity: Vector, sheep_model: SheepModel) -> None:
         Subject.__init__(self)
+        self.sheep_model = sheep_model
+
         self.corral = None
         self.position = position
         self.velocity = velocity
