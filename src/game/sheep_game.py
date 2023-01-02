@@ -18,6 +18,8 @@ from services.corral_service import CorralService
 from services.score_service import ScoreService
 
 from classes.vector import Vector
+from classes.geometry import circle_points
+
 from singletons import service_locator
 from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 from services.sound_service import SoundService
@@ -46,7 +48,7 @@ class SheepGame(Game):
     map_service: MapService
     score_service: ScoreService
     sound_service: SoundService
-    input_handler: InputHandler
+    input_handler: InputHandler    
 
     def add_level(self):
 
@@ -58,11 +60,19 @@ class SheepGame(Game):
         # clear dogs
         self.dog_service.clear_dogs()
 
+        middle_screen = Vector(x = self.game_grid.x/2, y = self.game_grid.y/2)
+
+        # create circles in a circular way
+        circular_radius = NUMBER_OF_DOGS*1.5 + 2
+        print(circular_radius)
+        circular_coordinates = circle_points(radius=circular_radius, number_of_points=NUMBER_OF_DOGS)
+
         # add dogs to its service
-        for _ in range(NUMBER_OF_DOGS):
+        for circular_vector in circular_coordinates:
+            dog_start_position = middle_screen.copy().sum(circular_vector)
             self.dog_service.add_dog(
                 Dog(
-                    position=Vector(x = self.game_grid.x/2, y = self.game_grid.y/2),
+                    position=dog_start_position,
                     dog_model=dog_model
                 )
             )

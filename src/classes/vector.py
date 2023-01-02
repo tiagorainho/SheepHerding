@@ -54,6 +54,9 @@ class Vector:
     def __str__(self):
         return str((self.x, self.y))
     
+    def __repr__(self) -> str:
+        return str(self)
+    
     def __eq__(self, vector: Vector) -> bool:
         return vector.x == self.x and vector.y == self.y
 
