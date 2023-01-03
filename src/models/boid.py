@@ -3,30 +3,42 @@ from typing import List
 
 from classes.vector import Vector
 
-DEFAULT_ALLIGNMENT_STRENGTH: float = 0.5
-DEFAULT_COHESION_STRENGTH: float = 0.1
-DEFAULT_SEPARATION_STRENGTH: float = 8
-THREAT_SEPARATION_STRENGTH: float = DEFAULT_SEPARATION_STRENGTH * 5
-MINIMUM_BOID_DISTANCE: float = 20
 
-class Boid:
-
-    position: Vector
-    velocity: Vector
-    max_acceleration: float = 1
-
+class BoidBreed:
     allignment_strength: float
     cohesion_strength: float
     separation_strength: float
+    threat_fear_multiplier: float
+    minimum_confort_distance: float
+
+    def __init__(self, 
+        allignment_strength: float,
+        cohesion_strength: float,
+        separation_strength: float,
+        threat_fear_multiplier: float,
+        minimum_confort_distance: float
+    ) -> None:
+        self.allignment_strength = allignment_strength
+        self.cohesion_strength = cohesion_strength
+        self.separation_strength = separation_strength
+        self.threat_fear_multiplier = threat_fear_multiplier
+        self.minimum_confort_distance = minimum_confort_distance
+
+    @property
+    def threat_separation_strength(self):
+        return self.separation_strength * self.threat_fear_multiplier
+
+
+class Boid:
+    breed: BoidBreed
+
+    position: Vector
+    velocity: Vector
     
+    def __init__(self, breed: BoidBreed) -> None:
+        self.breed = breed
 
-    def __init__(self) -> None:
-        self.allignment_strength = DEFAULT_ALLIGNMENT_STRENGTH
-        self.cohesion_strength = DEFAULT_COHESION_STRENGTH
-        self.separation_strength = DEFAULT_SEPARATION_STRENGTH
-
-
-    def allignment(self, closest_boids: List[Boid], allignment_strength: float = DEFAULT_ALLIGNMENT_STRENGTH) -> Vector:
+    def allignment(self, closest_boids: List[Boid]) -> Vector:
         steering: Vector = Vector(0,0)
         if len(closest_boids) == 0:
             return steering
@@ -38,10 +50,10 @@ class Boid:
         return steering\
             .div(value = len(closest_boids))\
             .sub(vector = self.velocity)\
-            .mult(scalar = allignment_strength)
+            .mult(scalar = self.breed.allignment_strength)
 
 
-    def cohesion(self, closest_boids: List[Boid], cohesion_strength: float = DEFAULT_COHESION_STRENGTH) -> Vector:
+    def cohesion(self, closest_boids: List[Boid]) -> Vector:
         average_flock_position: Vector = Vector(0,0)
         if len(closest_boids) == 0:
             return average_flock_position
@@ -54,9 +66,9 @@ class Boid:
 
         return average_flock_position\
             .sub(self.position)\
-            .mult(scalar = cohesion_strength)
+            .mult(scalar = self.breed.cohesion_strength)
 
-    def separation(self, neighbors: List[Vector], separation_strength: float = DEFAULT_SEPARATION_STRENGTH) -> Vector:
+    def separation(self, neighbors: List[Vector], separation_strength: float) -> Vector:
         repulsive_force = Vector(0,0)
         if len(neighbors) == 0:
             return repulsive_force
@@ -70,12 +82,10 @@ class Boid:
         return repulsive_force\
             .div(len(neighbors))\
             .mult(scalar = separation_strength)
-            
     
     def get_boid_behaviour(self, closest_boids: List[Boid], threats: List[Vector]) -> Vector:
-        near_boids = [boid.position for boid in closest_boids if boid.position.distance(self.position) <= MINIMUM_BOID_DISTANCE]
+        near_boids = [boid.position for boid in closest_boids if boid.position.distance(self.position) <= self.breed.minimum_confort_distance]
         return self.allignment(closest_boids)\
             .sum(self.cohesion(closest_boids))\
-            .sum(self.separation(near_boids))\
-            .sum(self.separation(threats, THREAT_SEPARATION_STRENGTH))\
-            .limit(value = self.max_acceleration)
+            .sum(self.separation(near_boids, self.breed.separation_strength))\
+            .sum(self.separation(threats, self.breed.threat_separation_strength))

@@ -15,3 +15,4 @@ def screen_dimensions():
 
 SCREEN_WIDTH, SCREEN_HEIGHT = screen_dimensions()
 SCALE: int = 5
+FPS: int = 20

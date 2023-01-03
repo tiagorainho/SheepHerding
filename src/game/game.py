@@ -1,9 +1,8 @@
 from typing import DefaultDict
 from collections import defaultdict
+from game.game_configs import FPS
 
 import pygame
-
-DEFAULT_FPS = 20
 
 class Game:
     clock: pygame.time.Clock
@@ -16,7 +15,6 @@ class Game:
     height: int
     width: int
     scale: int
-
     
     def __init__(self, height: int, width: int, scale: int):
         pygame.init()
@@ -26,7 +24,7 @@ class Game:
         self.width = width*self.scale
         self.display = pygame.display.set_mode((self.width, self.height))
         self.screen = pygame.Surface((self.width, self.height))
-        self.fps = DEFAULT_FPS
+        self.fps = FPS
         self.sprites = defaultdict(pygame.sprite.Group)
         
         pygame.mixer.init()
@@ -42,14 +40,16 @@ class Game:
         self.running = True
 
         while self.running:
-
+            
+            # get events
             events = pygame.event.get()
             for e in events:
                 if e.type == pygame.QUIT:
                     self.running = False
                     pygame.quit()
                     return
-                
+            
+            # update game with the new events
             update_function(events)
 
             # render window

@@ -3,28 +3,50 @@ from __future__ import annotations
 from models.dog_model import DogModel
 from classes.vector import Vector
 
-ACELARATION_MULTIPLIER = 0.95
+# breed configurations
+DRAG_FACTOR = 0.95
 MAX_VELOCITY = 2
 MAX_ACCELERATION = 0.2
+
+# game configurations
 MIN_VELOCITY = 0.02
+
+class DogBreed:
+    drag_factor: float
+    maximum_velocity: float
+    maximum_acceleration: float
+
+    def __init__(self,
+        drag_factor: float = DRAG_FACTOR,
+        maximum_velocity: float = MAX_VELOCITY,
+        maximum_acceleration: float = MAX_ACCELERATION
+    ) -> None:
+        self.drag_factor = drag_factor
+        self.maximum_acceleration = maximum_acceleration
+        self.maximum_velocity = maximum_velocity
+
 
 class Dog:
     position: Vector
     velocity: Vector
-    selected: bool
+    breed: DogBreed
     dog_model: DogModel
 
-    def __init__(self, position: Vector, dog_model: DogModel) -> None:
+    selected: bool
+
+
+    def __init__(self, position: Vector, dog_model: DogModel, breed: DogBreed) -> None:
+        self.breed = breed
+        self.dog_model = dog_model
         self.position = position
         self.velocity = Vector(0, 0)
-        self.dog_model = dog_model
 
     def accelerate(self, acceleration: Vector):
-        self.velocity.sum(acceleration.limit(MAX_ACCELERATION)).limit(MAX_VELOCITY)
+        self.velocity.sum(acceleration.limit(self.breed.maximum_acceleration)).limit(MAX_VELOCITY)
     
     def update(self, selected: bool):
         self.selected = selected
-        self.velocity.mult(ACELARATION_MULTIPLIER).limit(MAX_VELOCITY)
+        self.velocity.mult(self.breed.drag_factor).limit(self.breed.maximum_velocity)
 
         if self.velocity.magnitude <= MIN_VELOCITY:
             self.velocity = Vector(0,0)

@@ -18,8 +18,8 @@ class SheepFSM(FSM):
 
         super().__init__(states, transitions)
 
-    def update(self, ant):
-        self.current.update(ant)
+    def update(self, sheep):
+        self.current.update(sheep)
 
 
 class Graze(State):

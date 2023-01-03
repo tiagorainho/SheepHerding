@@ -5,9 +5,9 @@ from random import randint, seed
 
 from game.game import Game
 
-from models.sheep import Sheep
+from models.sheep import Sheep, SheepBreed
 from models.sheep_model import SheepModel
-from models.dog import Dog
+from models.dog import Dog, DogBreed
 from models.dog_model import DogModel
 from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
 
@@ -66,22 +66,26 @@ class SheepGame(Game):
         circular_coordinates = circle_points(radius=circular_radius, number_of_points=number_of_dogs_level)
 
         # add dogs to its service
+        dog_breed: DogBreed = DogBreed()
         for circular_vector in circular_coordinates:
             dog_start_position = middle_screen.copy().sum(circular_vector)
             self.dog_service.spawn(
                 Dog(
                     position=dog_start_position,
-                    dog_model=dog_model
+                    dog_model=dog_model,
+                    breed=dog_breed
                 )
             )
         self.dog_service.select(self.dog_service.dogs[0])
 
         # add sheeps to its service
+        sheep_breed: SheepBreed = SheepBreed()
         for _ in range(NUMBER_OF_SHEEP + (level-1) * DECREASE_RADIUS_BY_LEVEL):
             new_sheep = Sheep(
                     position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
-                    sheep_model=sheep_model
+                    sheep_model=sheep_model,
+                    sheep_breed=sheep_breed
                 )
 
             new_sheep.add_observer(obs=self.score_service.score_board)

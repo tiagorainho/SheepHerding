@@ -4,17 +4,52 @@ from typing import List
 from observers.subject import Subject
 from classes.vector import Vector
 
-from models.boid import Boid
+from models.boid import Boid, BoidBreed
 from states.sheep_fsm import SheepFSM
 from models.corral import Corral
 from models.sheep_model import SheepModel
 
-ACELARATION_MULTIPLIER = 0.9
+# breed configurations
+DRAG_FACTOR = 0.9
 MAX_VELOCITY = 1.5
 MAX_ACCELERATION = 0.6
+ALLIGNMENT_STRENGTH: float = 0.5
+COHESION_STRENGTH: float = 0.1
+SEPARATION_STRENGTH: float = 8
+FEAR_MULTIPLIER: float = 5
+MINIMUM_BOID_DISTANCE: float = 20
+
+# game configurations
 MIN_VELOCITY = 0.1
 
+class SheepBreed(BoidBreed):
+    maximum_velocity: float
+    maximum_acceleration: float
+    drag_factor: float
+
+    def __init__(self, 
+        allignment_strength:float = ALLIGNMENT_STRENGTH,
+        cohesion_strength:float = COHESION_STRENGTH,
+        separation_strength:float = SEPARATION_STRENGTH,
+        minimum_confort_distance:float = MINIMUM_BOID_DISTANCE,
+        threat_fear_multiplier:float = FEAR_MULTIPLIER,
+        maximum_velocity:float = MAX_VELOCITY,
+        maximum_acceleration:float = MAX_ACCELERATION,
+        drag_factor:float = DRAG_FACTOR
+    ) -> None:
+        self.allignment_strength = allignment_strength
+        self.cohesion_strength = cohesion_strength
+        self.separation_strength = separation_strength
+        self.minimum_confort_distance = minimum_confort_distance
+        self.threat_fear_multiplier = threat_fear_multiplier
+        self.maximum_velocity = maximum_velocity
+        self.maximum_acceleration = maximum_acceleration
+        self.drag_factor = drag_factor
+
+
 class Sheep(Boid, Subject):
+    breed: SheepBreed
+    sheep_model: SheepModel
     position: Vector
     velocity: Vector
     
@@ -25,10 +60,10 @@ class Sheep(Boid, Subject):
     
     corral: Corral or None
 
-    sheep_model: SheepModel
-
-    def __init__(self, position: Vector, velocity: Vector, sheep_model: SheepModel) -> None:
+    def __init__(self, position: Vector, velocity: Vector, sheep_model: SheepModel, sheep_breed: SheepBreed) -> None:
         Subject.__init__(self)
+        Boid.__init__(self, breed=sheep_breed)
+
         self.sheep_model = sheep_model
 
         self.corral = None
@@ -51,10 +86,11 @@ class Sheep(Boid, Subject):
         self.closest_sheep = closest_sheep
         self.threats = threats
 
-        self.fsm.update(ant=self)
+        # update sheep state
+        self.fsm.update(self)
 
         # simulate drag
-        self.velocity.mult(ACELARATION_MULTIPLIER)
+        self.velocity.mult(self.breed.drag_factor)
 
         # ignore minimal velocity changes. Objective: diminish flickering
         if self.velocity.magnitude <= MIN_VELOCITY:
@@ -63,4 +99,4 @@ class Sheep(Boid, Subject):
         self.position.sum(self.velocity)
     
     def accelerate(self, vector: Vector):
-        self.velocity.sum(vector.limit(MAX_ACCELERATION)).limit(MAX_VELOCITY)
+        self.velocity.sum(vector.limit(self.breed.maximum_acceleration)).limit(self.breed.maximum_velocity)
