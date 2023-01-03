@@ -1,12 +1,11 @@
-from game.sheep_game import SheepGame
-
 import cProfile
-
-DEBUG: bool = False
-
 import atexit
 import pstats
 import io
+
+from game.sheep_game import SheepGame
+
+DEBUG: bool = False
 
 pr: cProfile.Profile
 

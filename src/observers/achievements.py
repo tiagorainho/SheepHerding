@@ -4,6 +4,7 @@ from typing import DefaultDict
 from models.corral import Corral
 from collections import defaultdict
 from singletons import service_locator
+from services.sound_service import SoundService
 
 VOLUME = 0.1
 
@@ -24,7 +25,7 @@ class Achievements(Observer):
             self.scores[kwargs["corral"]] += 1
 
             # play sound
-            service_locator.get_service('sound_service').play_win_gold(volume=VOLUME)
+            service_locator.get_service(SoundService.__name__).play_win_gold(volume=VOLUME)
             
     def draw(self):
         print(f"score: {self.score}")

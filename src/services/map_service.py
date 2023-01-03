@@ -69,8 +69,8 @@ class MapService:
 
 
     def update(self):
-        self.dog_service: DogService = service_locator.get_service('dog_service')
-        self.sheep_service: SheepService = service_locator.get_service('sheep_service')
+        self.dog_service: DogService = service_locator.get_service(DogService.__name__)
+        self.sheep_service: SheepService = service_locator.get_service(SheepService.__name__)
 
         for dog in self.dog_service.dogs:
             self.constrain_position(dog)

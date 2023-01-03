@@ -32,7 +32,7 @@ class CorralService:
         return [sprite.corral for sprite in self.sprites.sprites()]
     
     def update(self):
-        self.sheep_service: SheepService = service_locator.get_service('sheep_service')
+        self.sheep_service: SheepService = service_locator.get_service(SheepService.__name__)
         sheeps = self.sheep_service.sheeps
 
         corrals = self.corrals

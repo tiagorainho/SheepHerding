@@ -40,6 +40,7 @@ class SheepGame(Game):
     map_service: MapService
     score_service: ScoreService
     sound_service: SoundService
+
     input_handler: InputHandler    
 
     def add_level(self):
@@ -107,44 +108,26 @@ class SheepGame(Game):
 
         self.input_handler = InputHandler(self)
         
-        self.score_service: ScoreService = service_locator.registry(
-            name="scores_service",
-            service=ScoreService()
-        )
+        self.score_service: ScoreService = service_locator.registry(service=ScoreService())
         self.sprites['scores'] = self.score_service.sprites
 
-        self.map_service: MapService = service_locator.registry(
-            name="map_service",
-            service=MapService(self.game_grid)
-        )
+        self.map_service: MapService = service_locator.registry(service=MapService(self.game_grid))
         self.sprites['map'] = self.map_service.sprites
 
-        self.corral_service: CorralService = service_locator.registry(
-            name="corral_service",
-            service=CorralService(self.game_grid)
-        )
+        self.corral_service: CorralService = service_locator.registry(service=CorralService(self.game_grid))
         self.sprites['corral'] = self.corral_service.sprites
 
 
         # registry dog service
-        self.dog_service: DogService = service_locator.registry(
-            name="dog_service", 
-            service=DogService()
-        )
+        self.dog_service: DogService = service_locator.registry(service=DogService())
         self.sprites[Dog.__name__] = self.dog_service.sprites
 
         # registry sheep service
-        self.sheep_service: SheepService = service_locator.registry(
-            name="sheep_service", 
-            service=SheepService()
-        )
+        self.sheep_service: SheepService = service_locator.registry(service=SheepService())
         self.sprites[Sheep.__name__] = self.sheep_service.sprites
 
         # registry sound service
-        self.sound_service: SoundService = service_locator.registry(
-            name="sound_service", 
-            service=SoundService("assets/sounds")
-        )
+        self.sound_service: SoundService = service_locator.registry(service=SoundService("assets/sounds"))
 
         self.sound_service.play_background()
 
@@ -167,8 +150,6 @@ class SheepGame(Game):
         for command in undo_commands:
             command.undo()
 
-        self.corral_service.update()
-
         # update objects state
         self.sheep_service.update()
         self.dog_service.update()
@@ -176,6 +157,7 @@ class SheepGame(Game):
         # update map
         self.map_service.update()
         self.score_service.update()
+        self.corral_service.update()
 
         # level up
         if self.score_service.score_board.total_score >= NUMBER_OF_SHEEP:

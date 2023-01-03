@@ -3,6 +3,8 @@ from collections import defaultdict
 
 import pygame
 
+DEFAULT_FPS = 20
+
 class Game:
     clock: pygame.time.Clock
     fps: int
@@ -24,7 +26,7 @@ class Game:
         self.width = width*self.scale
         self.display = pygame.display.set_mode((self.width, self.height))
         self.screen = pygame.Surface((self.width, self.height))
-        self.fps = 20
+        self.fps = DEFAULT_FPS
         self.sprites = defaultdict(pygame.sprite.Group)
         
         pygame.mixer.init()

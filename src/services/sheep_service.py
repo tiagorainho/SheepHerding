@@ -29,7 +29,7 @@ class SheepService:
         threats = defaultdict(list)
 
         # get dogs
-        dog_service: DogService = service_locator.get_service('dog_service')
+        dog_service: DogService = service_locator.get_service(DogService.__name__)
         dogs = dog_service.dogs
         
         # get sheeps

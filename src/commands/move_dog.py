@@ -11,5 +11,5 @@ class MoveDog(Command):
         self.direction = direction
         
     def execute(self):
-        dog_service: DogService = service_locator.get_service("dog_service")
+        dog_service: DogService = service_locator.get_service(DogService.__name__)
         dog_service.selected_dog.accelerate(self.direction)
