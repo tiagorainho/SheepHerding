@@ -16,9 +16,14 @@ class SpriteModel:
 
         for folder in os.scandir(dir_name):
             if not folder.is_dir(): continue
+
+            sprite_files = []
         
             for file in os.scandir(f"{dir_name}/{folder.name}"):
                 if not file.is_file(): continue
                 if not any(ext in file.name for ext in ALLOWED_EXTENSIONS): continue
+                
+                sprite_files.append(file.path)
 
-                self.sprites[folder.name].append(SpriteSheet(filename=file.path))
+            for file_name in sorted(sprite_files):
+                self.sprites[folder.name].append(SpriteSheet(filename=file_name))
