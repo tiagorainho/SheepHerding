@@ -68,7 +68,7 @@ class SheepGame(Game):
         # add dogs to its service
         for circular_vector in circular_coordinates:
             dog_start_position = middle_screen.copy().sum(circular_vector)
-            self.dog_service.add_dog(
+            self.dog_service.spawn(
                 Dog(
                     position=dog_start_position,
                     dog_model=dog_model
@@ -85,9 +85,7 @@ class SheepGame(Game):
                 )
 
             new_sheep.add_observer(obs=self.score_service.score_board)
-            self.sheep_service.add_sheep(
-                new_sheep
-            )
+            self.sheep_service.spawn(sheep=new_sheep)
         
         # add corral
         self.corral_service.clear_corrals()
@@ -105,18 +103,18 @@ class SheepGame(Game):
     def __init__(self):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
         super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
-
-        self.input_handler = InputHandler(self)
         
+        # registry score service
         self.score_service: ScoreService = service_locator.registry(service=ScoreService())
-        self.sprites['scores'] = self.score_service.sprites
+        self.sprites['score'] = self.score_service.sprites
 
+        # registry map service
         self.map_service: MapService = service_locator.registry(service=MapService(self.game_grid))
         self.sprites['map'] = self.map_service.sprites
 
+        # registry corral service
         self.corral_service: CorralService = service_locator.registry(service=CorralService(self.game_grid))
-        self.sprites['corral'] = self.corral_service.sprites
-
+        self.sprites[Corral.__name__] = self.corral_service.sprites
 
         # registry dog service
         self.dog_service: DogService = service_locator.registry(service=DogService())
@@ -128,8 +126,10 @@ class SheepGame(Game):
 
         # registry sound service
         self.sound_service: SoundService = service_locator.registry(service=SoundService("assets/sounds"))
-
         self.sound_service.play_background()
+
+        # instantiate input handler
+        self.input_handler = InputHandler(self)
 
         self.add_level()
         

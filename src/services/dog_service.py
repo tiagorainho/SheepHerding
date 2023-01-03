@@ -26,7 +26,7 @@ class DogService:
     def select(self, dog: Dog):
         self.selected_dog = dog
 
-    def add_dog(self, dog: Dog):
+    def spawn(self, dog: Dog):
         self.sprites.add(DogSprite(dog=dog))
     
     def update(self):
@@ -38,20 +38,20 @@ class DogService:
         dogs = self.dogs
 
         # filter dogs based on direction vector
-        filtered_dogs = []
+        filtered_dogs = set()
         for dog in dogs:
             if dog == self.selected_dog: continue
 
             distance_vector = dog.position.copy().sub(self.selected_dog.position)
 
             if distance_vector.x > 0 and direction.x > 0:
-                filtered_dogs.append(dog)
+                filtered_dogs.add(dog)
             if distance_vector.x < 0 and direction.x < 0:
-                filtered_dogs.append(dog)
+                filtered_dogs.add(dog)
             if distance_vector.y > 0 and direction.y > 0:
-                filtered_dogs.append(dog)
+                filtered_dogs.add(dog)
             if distance_vector.y < 0 and direction.y < 0:
-                filtered_dogs.append(dog)
+                filtered_dogs.add(dog)
         
         if len(filtered_dogs) == 0: return
 

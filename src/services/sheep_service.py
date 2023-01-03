@@ -10,6 +10,7 @@ from services.dog_service import DogService
 
 PERCEPTION_DISTANCE = 40
 
+
 class SheepService:
 
     # change to use a map [coordinates, sheep]
@@ -22,7 +23,7 @@ class SheepService:
     def sheeps(self) -> List[Sheep]:
         return [sprite.sheep for sprite in self.sprites.sprites()]
 
-    def add_sheep(self, sheep: Sheep):
+    def spawn(self, sheep: Sheep):
         self.sprites.add(SheepSprite(sheep=sheep))
     
     def update(self):
