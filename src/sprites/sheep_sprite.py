@@ -35,7 +35,6 @@ class SheepSprite(CustomSprite):
 
         self.sprite_idx = 0
         self.previous_sprite = None
-    
 
     def update(self):
 
@@ -63,7 +62,7 @@ class SheepSprite(CustomSprite):
 
             # return if the sprite remains the same, no need to blit
             if not self.update_image(rest_sprite): return
-            
+
         else:
             running_sprites = self.sheep.sheep_model.run_right_sprites() if self.sheep.velocity.x >= 0 else self.sheep.sheep_model.run_left_sprites()
 
