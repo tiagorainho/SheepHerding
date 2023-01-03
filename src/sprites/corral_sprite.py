@@ -19,9 +19,10 @@ class CorralSprite(CustomSprite):
         # make transparent
         self.image.set_alpha(128)
 
-        pygame.draw.circle(surface=self.image, color=COLOR, center=(self.size*self.scale, self.size*self.scale), radius=self.size*self.scale)
+        # draw circle
+        self.rect = pygame.draw.circle(surface=self.image, color=COLOR, center=(self.size*self.scale, self.size*self.scale), radius=self.size*self.scale)
 
-        self.rect = self.image.get_rect()
+        # set corral position
         self.rect.center = (self.corral.position.x * self.scale, self.corral.position.y * self.scale)
         
 
