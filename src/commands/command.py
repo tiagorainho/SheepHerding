@@ -2,7 +2,7 @@
 class Command:
     
     def execute(self, game):
-        raise NotImplemented()
+        raise NotImplementedError()
     
     def undo(self):
         pass

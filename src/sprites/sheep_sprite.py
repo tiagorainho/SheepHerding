@@ -58,19 +58,16 @@ class SheepSprite(CustomSprite):
         # animate sheep
         sheep_velocity = self.sheep.velocity.magnitude
         if sheep_velocity == 0:
-            rest_sprite = self.sheep.sheep_model.rest_sprites()[0]
-
-            # return if the sprite remains the same, no need to blit
-            if not self.update_image(rest_sprite): return
-
+            sprite = self.sheep.sheep_model.rest_sprites()[0]
         else:
             running_sprites = self.sheep.sheep_model.run_right_sprites() if self.sheep.velocity.x >= 0 else self.sheep.sheep_model.run_left_sprites()
 
             sprite_update_velocity = sheep_velocity/SPRITE_COUNTER_DIVIDER
             self.sprite_idx = (self.sprite_idx + sprite_update_velocity) % len(running_sprites)
+            sprite = running_sprites[int(self.sprite_idx)]
 
-            # return if the sprite remains the same, no need to blit
-            if not self.update_image(running_sprites[int(self.sprite_idx)]): return
+        # return if the sprite remains the same, no need to blit
+        if not self.update_image(sprite): return
     
         # draw sheep image
         self.image.fill("white")

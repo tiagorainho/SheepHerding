@@ -8,12 +8,14 @@ from commands.move_dog import MoveDog
 
 from classes.vector import Vector
 
-DOG_DIRECTION = {
+DOG_COMMANDS = {
     pygame.K_w: UpdateUp,
     pygame.K_s: UpdateDown,
     pygame.K_a: UpdateLeft,
     pygame.K_d: UpdateRight
 }
+
+KEY_BACK = pygame.K_z
 
 KEY_DIRECTION = {
     pygame.K_UP: Vector(0, -1),
@@ -21,8 +23,6 @@ KEY_DIRECTION = {
     pygame.K_LEFT: Vector(-1, 0),
     pygame.K_RIGHT: Vector(1, 0),
 }
-
-KEY_BACK = pygame.K_z
 
 class InputHandler:
 
@@ -39,13 +39,12 @@ class InputHandler:
             - list of commands to undo
         """
 
-
         commands = []
         commands_undo = []
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in DOG_DIRECTION:
-                    command = DOG_DIRECTION[event.key]()
+                if event.key in DOG_COMMANDS:
+                    command = DOG_COMMANDS[event.key]()
                     commands.append(command)
 
                 if event.key == KEY_BACK:

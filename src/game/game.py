@@ -31,6 +31,9 @@ class Game:
         
         pygame.mixer.init()
         pygame.mixer.stop()
+    
+    def update(self, events):
+        raise NotImplementedError()
 
     def start(self):
         self.run(self.update)
@@ -45,7 +48,7 @@ class Game:
                 if e.type == pygame.QUIT:
                     self.running = False
                     pygame.quit()
-                    exit()
+                    return
                 
             update_function(events)
 

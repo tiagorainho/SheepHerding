@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-from singletons import service_locator
+from services import service_locator
 from sprites.corral_sprite import CorralSprite
 from classes.vector import Vector
 from services.sheep_service import SheepService

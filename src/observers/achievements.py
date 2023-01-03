@@ -3,7 +3,7 @@ from enums.events import Event
 from typing import DefaultDict
 from models.corral import Corral
 from collections import defaultdict
-from singletons import service_locator
+from services import service_locator
 from services.sound_service import SoundService
 
 VOLUME = 0.1

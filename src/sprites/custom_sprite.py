@@ -1,6 +1,6 @@
 
 import pygame
-from singletons.game_configs import SCREEN_HEIGHT, SCREEN_WIDTH, SCALE
+from game.game_configs import SCREEN_HEIGHT, SCREEN_WIDTH, SCALE
 
 class CustomSprite(pygame.sprite.Sprite):
     height: int

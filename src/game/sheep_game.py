@@ -20,8 +20,8 @@ from services.score_service import ScoreService
 from classes.vector import Vector
 from classes.geometry import circle_points
 
-from singletons import service_locator
-from singletons.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
+from services import service_locator
+from game.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 from services.sound_service import SoundService
 
 from commands.input_handler import InputHandler

@@ -5,7 +5,7 @@ from typing import List
 from models.sheep import Sheep
 from sprites.sheep_sprite import SheepSprite
 from collections import defaultdict
-from singletons import service_locator
+from services import service_locator
 from services.dog_service import DogService
 
 PERCEPTION_DISTANCE = 40

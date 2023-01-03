@@ -5,7 +5,7 @@ import pygame
 from sprites.map_sprite import MapSprite
 from services.dog_service import DogService
 from services.sheep_service import SheepService
-from singletons import service_locator
+from services import service_locator
 from classes.vector import Vector
 
 
