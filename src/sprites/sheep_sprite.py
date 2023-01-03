@@ -11,6 +11,7 @@ class SheepSprite(CustomSprite):
 
     sheep: Sheep
     sprite_idx: int
+    alpha: int
 
     def update_image(self, sprite):
         if self.previous_sprite == sprite: return False
@@ -31,7 +32,7 @@ class SheepSprite(CustomSprite):
         self.image = pygame.Surface([self.scale*self.size, self.scale*self.size])
         self.image = self.image.convert_alpha()
         self.rect = self.image.get_rect()
-        self.intensity = 255
+        self.alpha = 255
 
         self.sprite_idx = 0
         self.previous_sprite = None
@@ -44,16 +45,16 @@ class SheepSprite(CustomSprite):
 
         # make sheep transparent
         if self.sheep.corral != None:
-            self.intensity -= DELTA_TRANSPARENCY
-            if self.intensity < 0:
-                self.intensity = 0
+            self.alpha -= DELTA_TRANSPARENCY
+            if self.alpha < 0:
+                self.alpha = 0
                 self.sheep.notify(entity=self.sheep, event=Event.ENTER_CORRAL, corral=self.sheep.corral)
                 self.kill()
         else:
-            self.intensity += DELTA_TRANSPARENCY
-            if self.intensity > 255:
-                self.intensity = 255
-        self.image.set_alpha(self.intensity)
+            self.alpha += DELTA_TRANSPARENCY
+            if self.alpha > 255:
+                self.alpha = 255
+        self.image.set_alpha(self.alpha)
 
         # animate sheep
         sheep_velocity = self.sheep.velocity.magnitude
