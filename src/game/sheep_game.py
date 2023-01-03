@@ -10,6 +10,7 @@ from sprites.sheep_model import SheepModel
 from models.dog import Dog, DogBreed
 from sprites.dog_model import DogModel
 from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
+from models.map_constraints import MapConstraints
 
 from services.sheep_service import SheepService
 from services.dog_service import DogService
@@ -41,7 +42,7 @@ class SheepGame(Game):
     score_service: ScoreService
     sound_service: SoundService
 
-    input_handler: InputHandler    
+    input_handler: InputHandler
 
     def add_level(self):
 
@@ -113,7 +114,8 @@ class SheepGame(Game):
         self.sprites['score'] = self.score_service.sprites
 
         # registry map service
-        self.map_service: MapService = service_locator.registry(service=MapService(self.game_grid))
+        map_constraints = MapConstraints(self.game_grid)
+        self.map_service: MapService = service_locator.registry(service=MapService(map_constraints))
         self.sprites['map'] = self.map_service.sprites
 
         # registry corral service

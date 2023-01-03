@@ -34,7 +34,6 @@ class Dog:
 
     selected: bool
 
-
     def __init__(self, position: Vector, dog_model: DogModel, breed: DogBreed) -> None:
         self.breed = breed
         self.dog_model = dog_model
