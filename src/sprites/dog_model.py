@@ -1,8 +1,7 @@
+from sprites.sprites_model import SpriteModel
 
-from models.sprites_model import SpriteModel
-
-class SheepModel(SpriteModel):
-
+class DogModel(SpriteModel):
+    
     def run_left_sprites(self):
         return self.sprites["run_left"]
 
@@ -10,4 +9,4 @@ class SheepModel(SpriteModel):
         return self.sprites["run_right"]
     
     def rest_sprites(self):
-        return [self.sprites["run_right"][0]]
+        return self.sprites["rest"]

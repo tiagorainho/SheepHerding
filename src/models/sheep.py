@@ -7,7 +7,7 @@ from classes.vector import Vector
 from models.boid import Boid, BoidBreed
 from states.sheep_fsm import SheepFSM
 from models.corral import Corral
-from models.sheep_model import SheepModel
+from sprites.sheep_model import SheepModel
 
 # breed configurations
 DRAG_FACTOR = 0.9

@@ -6,9 +6,9 @@ from random import randint, seed
 from game.game import Game
 
 from models.sheep import Sheep, SheepBreed
-from models.sheep_model import SheepModel
+from sprites.sheep_model import SheepModel
 from models.dog import Dog, DogBreed
-from models.dog_model import DogModel
+from sprites.dog_model import DogModel
 from models.corral import Corral, MAX_CORRAL_RADIUS, MIN_CORRAL_RADIUS
 
 from services.sheep_service import SheepService

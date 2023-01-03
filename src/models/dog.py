@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from models.dog_model import DogModel
+from sprites.dog_model import DogModel
 from classes.vector import Vector
 
 # breed configurations
