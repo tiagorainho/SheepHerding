@@ -4,7 +4,7 @@ import pygame
 
 from services import service_locator
 from sprites.corral_sprite import CorralSprite
-from classes.vector import Vector
+from utils.math.vector import Vector
 from services.sheep_service import SheepService
 from models.corral import Corral
 from typing import List

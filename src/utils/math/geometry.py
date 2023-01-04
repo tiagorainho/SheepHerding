@@ -2,7 +2,7 @@ import numpy as np
 
 from typing import List
 
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 def circle_points(radius, number_of_points) -> List[Vector]:
     t = np.linspace(0, 2*np.pi, number_of_points, endpoint=False)

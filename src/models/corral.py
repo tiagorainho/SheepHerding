@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import List
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 MIN_CORRAL_RADIUS: float = 8
 MAX_CORRAL_RADIUS: float = 15

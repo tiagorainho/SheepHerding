@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List
 
 from observers.subject import Subject
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 from models.boid import Boid, BoidBreed
 from states.sheep_fsm import SheepFSM

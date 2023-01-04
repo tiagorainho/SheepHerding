@@ -1,5 +1,5 @@
 
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 BORDER_REPULSIVE_FORCE: float = 1
 BORDER_MARGIN: float = 5

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from sprites.dog_model import DogModel
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 # breed configurations
 DRAG_FACTOR = 0.95

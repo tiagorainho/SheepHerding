@@ -4,7 +4,7 @@ import pygame
 from typing import List
 from models.dog import Dog
 
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 from sprites.dog_sprite import DogSprite
 

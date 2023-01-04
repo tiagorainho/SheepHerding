@@ -1,7 +1,7 @@
 from __future__ import annotations
 from states.fsm import FSM, State, Transition
 from random import randint
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 class SheepFSM(FSM):
 

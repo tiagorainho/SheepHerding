@@ -18,8 +18,8 @@ from services.map_service import MapService
 from services.corral_service import CorralService
 from services.score_service import ScoreService
 
-from classes.vector import Vector
-from classes.geometry import circle_points
+from utils.math.vector import Vector
+from utils.math.geometry import circle_points
 
 from services import service_locator
 from game.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE

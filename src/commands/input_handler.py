@@ -6,7 +6,7 @@ from commands.command import Command
 from commands.update_dog_commands import UpdateRight, UpdateDown, UpdateLeft, UpdateUp
 from commands.move_dog import MoveDog
 
-from classes.vector import Vector
+from utils.math.vector import Vector
 
 DOG_COMMANDS = {
     pygame.K_w: UpdateUp,
