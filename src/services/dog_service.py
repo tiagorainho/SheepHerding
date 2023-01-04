@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import pygame
 from typing import List
+
 from models.dog import Dog
-
 from utils.math.vector import Vector
-
 from sprites.dog_sprite import DogSprite
+
 
 class DogService:
 
@@ -18,23 +18,46 @@ class DogService:
     
     @property
     def dogs(self) -> List[Dog]:
+        """
+        get all the available dogs
+        """
+        
         return [sprite.dog for sprite in self.sprites.sprites()]
     
     def clear_dogs(self):
+        """
+        clear all existing dogs
+        """
+        
         self.sprites.empty()
 
     def select(self, dog: Dog):
+        """
+        select the dog to be controlled
+        """
+        
         self.selected_dog = dog
 
     def spawn(self, dog: Dog):
+        """
+        Spawn a new dog
+        """
+
         self.sprites.add(DogSprite(dog=dog))
     
     def update(self):
-        # update dogs positions
+        """
+        Update dogs positions
+        """
+
         for dog in self.dogs:
             dog.update(selected = (dog == self.selected_dog))
     
     def select_dog(self, direction: Vector):
+        """
+        Select the direction to select the next dog to control. However, if there is no dog in that direction the control of the current dog does not change.
+        """
+
         dogs = self.dogs
 
         # filter dogs based on direction vector

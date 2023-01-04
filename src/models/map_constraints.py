@@ -5,6 +5,10 @@ BORDER_REPULSIVE_FORCE: float = 1
 BORDER_MARGIN: float = 5
 
 class MapConstraints:
+    """
+    Constraints the objects inside the game based on the map.
+    """
+    
     border_repulsive_force: float
     border_margin: float
     game_grid: Vector
@@ -19,11 +23,18 @@ class MapConstraints:
         self.border_repulsive_force = border_repulsive_force
     
     def add_repulsive_force(self, obj , direction: Vector, repulsive_force):
+        """
+        Repulsive force from the walls of the border.
+        """
+        
         mag = direction.magnitude
         acceleration = direction.div(mag*mag).limit(repulsive_force)
         obj.position.sum(acceleration)
     
     def constrain_object(self, obj):
+        """
+        Constraints an object inside the game to the game grid.
+        """
 
         # fix x axis
         if obj.position.x >= self.game_grid.x - self.border_margin:
@@ -52,5 +63,9 @@ class MapConstraints:
                 obj.position.y = 0
 
     def update(self, objects):
+        """
+        Constraint a list of game objects.
+        """
+        
         for obj in objects:
             self.constrain_object(obj=obj)

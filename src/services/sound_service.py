@@ -12,9 +12,17 @@ class SoundService:
         self.background_sound = pygame.mixer.Sound(os.path.join(audios_dir, 'background.wav'))
 
     def play_win_gold(self, volume = DEFAULT_VOLUME):
+        """
+        Play a "winning gold" sound once.
+        """
+        
         self.win_gold_sound.set_volume(volume)
         self.win_gold_sound.play(fade_ms=100)
     
     def play_background(self):
+        """
+        Play a soundtrack indefinitely.
+        """
+        
         self.background_sound.set_volume(DEFAULT_VOLUME)
         self.background_sound.play(loops=-1)

@@ -5,17 +5,22 @@ from game.game_configs import FPS
 import pygame
 
 class Game:
+    """
+    Game Engine wrapper, a specific game should extend this class.
+    """
+
     clock: pygame.time.Clock
     fps: int
     display: pygame.display
     screen: pygame.Surface
     running: bool
-    sprites: DefaultDict[str, pygame.sprite.Group]
     scale: int
     height: int
     width: int
     scale: int
     
+    sprites: DefaultDict[str, pygame.sprite.Group]
+
     def __init__(self, height: int, width: int, scale: int):
         pygame.init()
         self.clock = pygame.time.Clock()
@@ -37,6 +42,10 @@ class Game:
         self.run(self.update)
 
     def run(self, update_function):
+        """
+        Game Loop. This is where the inputs are processed, the game is updated and the screen is rendered.
+        """
+
         self.running = True
 
         while self.running:
@@ -63,6 +72,10 @@ class Game:
             self.clock.tick(self.fps)
         
     def render_sprites(self):
+        """
+        Render sprite groups from the sprites variable.
+        """
+        
         for group in self.sprites.values():
             group.update()
             group.draw(self.screen)

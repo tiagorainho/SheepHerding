@@ -2,6 +2,10 @@ from __future__ import annotations
 from math import dist, sqrt
 
 class Vector:
+    """
+    Custom vector class.
+    """
+    
     x: float
     y: float
 

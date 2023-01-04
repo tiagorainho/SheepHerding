@@ -16,9 +16,17 @@ class Achievements(Observer):
 
     @property
     def total_score(self):
+        """
+        Get the total score on all corrals.
+        """
+        
         return sum(self.scores.values())
 
     def notify(self, entity, event: Event, **kwargs):
+        """
+        Implement the notify of the Achievements, this will listen to the ENTER_CORRAL event.
+        """
+        
         if event == Event.ENTER_CORRAL:
 
             # update score
@@ -26,6 +34,3 @@ class Achievements(Observer):
 
             # play sound
             service_locator.get_service(SoundService.__name__).play_win_gold(volume=VOLUME)
-            
-    def draw(self):
-        print(f"score: {self.score}")

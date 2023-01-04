@@ -7,6 +7,9 @@ from collections import defaultdict
 ALLOWED_EXTENSIONS = ["png", "jpeg"]
 
 class SpriteModel:
+    """
+    Model to load multiple sprites based on a file system. File name lexical order is registered.
+    """
     
     sprites: Dict[str, List[SpriteSheet]]
 

@@ -23,6 +23,10 @@ MINIMUM_BOID_DISTANCE: float = 20
 MIN_VELOCITY = 0.1
 
 class SheepBreed(BoidBreed):
+    """
+    Default sheep breed to define the sheep its capabilities.
+    """
+
     maximum_velocity: float
     maximum_acceleration: float
     drag_factor: float
@@ -81,6 +85,9 @@ class Sheep(Boid, Subject):
         self.corral = corral
 
     def update(self, closest_sheep: List[Sheep], threats: List[Vector]):
+        """
+        Update the sheep position based on its state which defines its velocity.
+        """
 
         # update perception
         self.closest_sheep = closest_sheep

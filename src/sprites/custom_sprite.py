@@ -3,6 +3,14 @@ import pygame
 from game.game_configs import SCREEN_HEIGHT, SCREEN_WIDTH, SCALE
 
 class CustomSprite(pygame.sprite.Sprite):
+    """
+    Default Sprite which sets the most basic properties such as:
+        - height
+        - width
+        - scale
+        - size
+    """
+
     height: int
     width: int
     scale: int

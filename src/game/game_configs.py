@@ -1,6 +1,9 @@
+import pygame
 
 def screen_dimensions():
-    import pygame
+    """
+    Get screen dimensions based on display information.
+    """
 
     # get width and height from pygame
     pygame.init()

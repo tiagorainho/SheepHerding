@@ -7,6 +7,10 @@ MIN_CORRAL_RADIUS: float = 8
 MAX_CORRAL_RADIUS: float = 15
 
 class Corral:
+    """
+    Corral to store animals.
+    """
+    
     position: Vector
     radius: float
 
@@ -15,8 +19,13 @@ class Corral:
         self.radius = radius
     
     def update(self, sheeps: List):
+        """
+        Sets the corral in which the animals are.
+        """
 
-        # remove sheeps
+        # NOTE: in order to have multiple corrals, the in_corral(corral = None) must not exist because it would override previously set values by other corrals
+
+        # update sheeps
         for sheep in sheeps:
             if sheep.position.distance(self.position) < self.radius:
                 sheep.in_corral(corral = self)

@@ -23,6 +23,11 @@ class SheepFSM(FSM):
 
 
 class Graze(State):
+    """
+    DO not use !! Makes the game unplayble because the pressure from the dogs become too important.
+    
+    Future work: make this component less important by having a medium delay when reached a certain position simulating eating.
+    """
 
     def __init__(self) -> None:
         super().__init__(self.__class__.__name__)
@@ -34,6 +39,9 @@ class Graze(State):
         sheep.accelerate(vector = vector)
 
 class Herd(State):
+    """
+    Provide boid behaviour for the sheeps.
+    """
 
     def __init__(self) -> None:
         super().__init__(self.__class__.__name__)

@@ -8,8 +8,8 @@ from collections import defaultdict
 from services import service_locator
 from services.dog_service import DogService
 
-PERCEPTION_DISTANCE = 40
 
+PERCEPTION_DISTANCE = 40
 
 class SheepService:
 
@@ -21,15 +21,27 @@ class SheepService:
 
     @property
     def sheeps(self) -> List[Sheep]:
+        """
+        Get all available Sheeps.
+        """
+        
         return [sprite.sheep for sprite in self.sprites.sprites()]
 
     def spawn(self, sheep: Sheep):
+        """
+        Spawn a new sheep.
+        """
+
         self.sprites.add(SheepSprite(sheep=sheep))
     
     def update(self):
+        """
+        Update sheep. This process fetches all the sheeps and threats to them (such as the sheepard dogs) and updates the sheeps velocity based on neighbor sheeps and threats.
+        """
+
         threats = defaultdict(list)
 
-        # get dogs
+        # get dog service to fetch all the dogs
         dog_service: DogService = service_locator.get_service(DogService.__name__)
         dogs = dog_service.dogs
         

@@ -18,9 +18,14 @@ class MapService:
         self.sprites.add(MapSprite())
     
     def update(self):
+        """
+        Update map. Includes constraining the game objects to be inside the map boundaries.
+        """
+
+        # fetch services from service locator
         dog_service: DogService = service_locator.get_service(DogService.__name__)
         sheep_service: SheepService = service_locator.get_service(SheepService.__name__)
 
-        # constraint objects
+        # constraint objects to the map boundaries
         self.map_constraints.update(dog_service.dogs)
         self.map_constraints.update(sheep_service.sheeps)

@@ -44,17 +44,18 @@ class SheepGame(Game):
 
     input_handler: InputHandler
 
-    def add_level(self):
+    dog_model: DogModel
+    sheep_model: SheepModel
 
-        level = self.score_service.level
+    def set_level(self, level: int):
+        """
+        Set the models such as the dogs, sheeps and corrals in the level it receives. Also, the random seed is also set to the level it receives in order to maintain all the levels equal.
+        """
         
         # set seed dependent on level, therefore the levels are always the same
         seed(level)
 
         middle_screen = Vector(x = self.game_grid.x/2, y = self.game_grid.y/2)
-
-        dog_model = DogModel("assets/images/dog")
-        sheep_model = SheepModel("assets/images/sheep")
 
         # clear dogs
         self.dog_service.clear_dogs()
@@ -73,7 +74,7 @@ class SheepGame(Game):
             self.dog_service.spawn(
                 Dog(
                     position=dog_start_position,
-                    dog_model=dog_model,
+                    dog_model=self.dog_model,
                     breed=dog_breed
                 )
             )
@@ -85,7 +86,7 @@ class SheepGame(Game):
             new_sheep = Sheep(
                     position=Vector(randint(0, self.game_grid.x), randint(0, self.game_grid.y)),
                     velocity=Vector(randint(-1, 1), randint(-1, 1)),
-                    sheep_model=sheep_model,
+                    sheep_model=self.sheep_model,
                     sheep_breed=sheep_breed
                 )
 
@@ -106,6 +107,9 @@ class SheepGame(Game):
 
 
     def __init__(self):
+        """
+        Initiate the SheepGame services, sprite groups, models, input handler and set the initial level.
+        """
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
         super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
         
@@ -134,23 +138,26 @@ class SheepGame(Game):
         self.sound_service: SoundService = service_locator.registry(service=SoundService("assets/sounds"))
         self.sound_service.play_background()
 
+        # instantiate sprite models
+        self.dog_model = DogModel("assets/images/dog")
+        self.sheep_model = SheepModel("assets/images/sheep")
+
         # instantiate input handler
         self.input_handler = InputHandler(self)
 
-        self.add_level()
+        self.set_level(self.score_service.level)
         
     def update(self, events: List[pygame.event.Event]):
         """
-        Game logic
+        SheepGame logic.
         """
 
-        # handle events
+        # handle events by converting them into commands
         exec_commands, undo_commands = self.input_handler.handle_input(events)
 
         # execute commands
         for command in exec_commands:
             command.execute()
-        
 
         # undo commands
         for command in undo_commands:
@@ -168,4 +175,4 @@ class SheepGame(Game):
         # level up
         if self.score_service.score_board.total_score >= NUMBER_OF_SHEEP:
             self.score_service.increase_level()
-            self.add_level()
+            self.set_level(self.score_service.level)

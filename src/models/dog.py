@@ -12,6 +12,10 @@ MAX_ACCELERATION = 0.2
 MIN_VELOCITY = 0.02
 
 class DogBreed:
+    """
+    Default dog breed to define the dog its capabilities.
+    """
+    
     drag_factor: float
     maximum_velocity: float
     maximum_acceleration: float
@@ -41,9 +45,13 @@ class Dog:
         self.velocity = Vector(0, 0)
 
     def accelerate(self, acceleration: Vector):
-        self.velocity.sum(acceleration.limit(self.breed.maximum_acceleration)).limit(MAX_VELOCITY)
+        self.velocity.sum(acceleration.limit(self.breed.maximum_acceleration)).limit(self.breed.maximum_velocity)
     
     def update(self, selected: bool):
+        """
+        Update the dog position based on its velocity and breed capabilities.
+        """
+        
         self.selected = selected
         self.velocity.mult(self.breed.drag_factor).limit(self.breed.maximum_velocity)
 

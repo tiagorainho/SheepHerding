@@ -22,6 +22,10 @@ class ScoreService:
     start_time: float
 
     def setup_static_sprites(self):
+        """
+        Update static sprites based on new information for the score and timer sprites
+        """
+        
         self.score_sprite = ScoreSprite(level = self.level)
         self.timer_sprite = ElapsedTimeSprite(start_time=self.start_time)
 
@@ -42,6 +46,10 @@ class ScoreService:
         self.setup_static_sprites()
 
     def update(self):
+        """
+        Update scores on the corrals and show level and elapsed time.
+        """
+        
         self.sprites.empty()
         for corral, score in self.score_board.scores.items():
             self.sprites.add(ScoreBoardSprite(corral, score))

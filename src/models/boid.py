@@ -5,6 +5,10 @@ from utils.math.vector import Vector
 
 
 class BoidBreed:
+    """
+    Type-Object pattern to have different configurations for boids wrapped in a class.
+    """
+
     allignment_strength: float
     cohesion_strength: float
     separation_strength: float
@@ -30,6 +34,10 @@ class BoidBreed:
 
 
 class Boid:
+    """
+    Basic boid class.
+    """
+
     breed: BoidBreed
 
     position: Vector
@@ -39,6 +47,10 @@ class Boid:
         self.breed = breed
 
     def allignment(self, closest_boids: List[Boid]) -> Vector:
+        """
+        Allign boids based on the neighbor boids.
+        """
+        
         steering: Vector = Vector(0,0)
         if len(closest_boids) == 0:
             return steering
@@ -54,6 +66,10 @@ class Boid:
 
 
     def cohesion(self, closest_boids: List[Boid]) -> Vector:
+        """
+        Approximate the boids based on the neighbor boids.
+        """
+
         average_flock_position: Vector = Vector(0,0)
         if len(closest_boids) == 0:
             return average_flock_position
@@ -69,6 +85,10 @@ class Boid:
             .mult(scalar = self.breed.cohesion_strength)
 
     def separation(self, neighbors: List[Vector], separation_strength: float) -> Vector:
+        """
+        Separate the boids based on the neighbor objects.
+        """
+
         repulsive_force = Vector(0,0)
         if len(neighbors) == 0:
             return repulsive_force
@@ -84,6 +104,10 @@ class Boid:
             .mult(scalar = separation_strength)
     
     def get_boid_behaviour(self, closest_boids: List[Boid], threats: List[Vector]) -> Vector:
+        """
+        Apply the boid behaviour to the current boid based on the closest boids and threats.
+        """
+
         near_boids = [boid.position for boid in closest_boids if boid.position.distance(self.position) <= self.breed.minimum_confort_distance]
         return self.allignment(closest_boids)\
             .sum(self.cohesion(closest_boids))\
