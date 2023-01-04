@@ -23,8 +23,8 @@ class CorralSprite(CustomSprite):
         self.rect = pygame.draw.circle(surface=self.image, color=COLOR, center=(self.size*self.scale, self.size*self.scale), radius=self.size*self.scale)
 
         # set corral position
-        self.rect.center = (self.corral.position.x * self.scale, self.corral.position.y * self.scale)
-        
+        self.rect.centerx = self.corral.position.x * self.scale
+        self.rect.centery = self.corral.position.y * self.scale
 
     def update(self):
         pass

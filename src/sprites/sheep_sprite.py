@@ -40,8 +40,8 @@ class SheepSprite(CustomSprite):
     def update(self):
 
         # update sheep position
-        self.rect.x = (self.sheep.position.x - self.size/2) * self.scale
-        self.rect.y = (self.sheep.position.y - self.size/2) * self.scale
+        self.rect.centerx = self.sheep.position.x * self.scale
+        self.rect.centery = self.sheep.position.y * self.scale
 
         # make sheep transparent
         if self.sheep.corral != None:

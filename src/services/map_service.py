@@ -1,5 +1,3 @@
-
-
 import pygame
 
 from sprites.map_sprite import MapSprite

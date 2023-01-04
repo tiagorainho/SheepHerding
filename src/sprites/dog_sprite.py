@@ -43,8 +43,8 @@ class DogSprite(CustomSprite):
     def update(self):
 
         # update position
-        self.rect.x = (self.dog.position.x - self.size/2) * self.scale
-        self.rect.y = (self.dog.position.y - self.size/2) * self.scale
+        self.rect.centerx = self.dog.position.x * self.scale
+        self.rect.centery = self.dog.position.y * self.scale
 
         # update alpha
         alpha = SELECTED_ALPHA if hasattr(self.dog, "selected") and self.dog.selected else NOT_SELECTED_ALPHA
