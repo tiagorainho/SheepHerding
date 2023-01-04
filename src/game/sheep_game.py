@@ -21,7 +21,7 @@ from services.score_service import ScoreService
 from utils.math.vector import Vector
 from utils.math.geometry import circle_points
 
-from services import service_locator
+from services.service_locator import ServiceLocator
 from game.game_configs import SCREEN_WIDTH, SCREEN_HEIGHT, SCALE
 from services.sound_service import SoundService
 
@@ -113,6 +113,8 @@ class SheepGame(Game):
         self.game_grid = Vector(SCREEN_WIDTH/SCALE, SCREEN_HEIGHT/SCALE)
         super().__init__(width = self.game_grid.x, height = self.game_grid.y, scale = SCALE)
         
+        service_locator = ServiceLocator.get_instance()
+
         # registry score service
         self.score_service: ScoreService = service_locator.registry(service=ScoreService())
         self.sprites['score'] = self.score_service.sprites

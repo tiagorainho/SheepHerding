@@ -5,7 +5,7 @@ from typing import List
 from models.sheep import Sheep
 from sprites.sheep_sprite import SheepSprite
 from collections import defaultdict
-from services import service_locator
+from services.service_locator import ServiceLocator
 from services.dog_service import DogService
 
 
@@ -15,9 +15,12 @@ class SheepService:
 
     # change to use a map [coordinates, sheep]
     sprites = pygame.sprite.Group
+    
+    service_locator: ServiceLocator
 
     def __init__(self):
         self.sprites = pygame.sprite.Group()
+        self.service_locator = ServiceLocator.get_instance()
 
     @property
     def sheeps(self) -> List[Sheep]:
@@ -42,7 +45,7 @@ class SheepService:
         threats = defaultdict(list)
 
         # get dog service to fetch all the dogs
-        dog_service: DogService = service_locator.get_service(DogService.__name__)
+        dog_service: DogService = self.service_locator.get_service(DogService.__name__)
         dogs = dog_service.dogs
         
         # get sheeps

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-from services import service_locator
+from services.service_locator import ServiceLocator
 from sprites.corral_sprite import CorralSprite
 from utils.math.vector import Vector
 from services.sheep_service import SheepService
@@ -15,10 +15,13 @@ class CorralService:
     sheep_service: SheepService
 
     game_grid: Vector
+    service_locator: ServiceLocator
 
     def __init__(self, game_grid: Vector):
         self.game_grid = game_grid
         self.sprites = pygame.sprite.Group()
+
+        self.service_locator = ServiceLocator.get_instance()
         
     
     def add_corral(self, corral: Corral):
@@ -49,7 +52,7 @@ class CorralService:
         """
         
         # fetch sheeps from sheep service
-        self.sheep_service: SheepService = service_locator.get_service(SheepService.__name__)
+        self.sheep_service: SheepService = self.service_locator.get_service(SheepService.__name__)
         sheeps = self.sheep_service.sheeps
 
         # update corrals based on sheeps
